@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 // screen
 import FirstStep from '../../components/register/firstStep';
 import SecondStep from '../../components/register/secondStep';
@@ -31,7 +32,12 @@ const Register = ({navigation}) => {
     };
     // using axios for post
     // if success save return token to storage
-    navigation.navigate('Home');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      }),
+    );
     // if fail
   };
 

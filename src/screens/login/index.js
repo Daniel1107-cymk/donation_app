@@ -22,6 +22,15 @@ const Login = ({navigation}) => {
     navigation.navigate('Register');
   };
 
+  const goToHome = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      }),
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -47,6 +56,7 @@ const Login = ({navigation}) => {
           />
           <Button
             title="Login"
+            onPress={goToHome}
             buttonStyle={styles.button}
             containerStyle={{marginTop: 20}}
             disabledTitleStyle={{color: Mixins.textWhite}}
