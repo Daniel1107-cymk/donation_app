@@ -18,8 +18,8 @@ const getData = async path => {
   try {
     const response = await axiosInstance.get(path);
     return {
-      success: response.success,
-      data: response.data,
+      success: response.data.success,
+      data: response.data.data,
     };
   } catch (error) {
     return errorHandler(error);
@@ -30,8 +30,8 @@ const postData = async (path, data) => {
   try {
     const response = await axiosInstance.post(path, data);
     return {
-      success: response.success,
-      data: response.data,
+      success: response.data.success,
+      data: response.data.data,
     };
   } catch (error) {
     return errorHandler(error);
@@ -42,8 +42,8 @@ const putData = async (path, data) => {
   try {
     const response = await axiosInstance.put(path, data);
     return {
-      success: response.success,
-      data: response.data,
+      success: response.data.success,
+      data: response.data.data,
     };
   } catch (error) {
     return errorHandler(error);
