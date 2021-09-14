@@ -25,7 +25,7 @@ const Index = () => {
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
-        name="Home"
+        name="HomeMenu"
         component={Home}
         options={{
           tabBarIcon: ({focused, color, style}) => (
@@ -33,8 +33,8 @@ const Index = () => {
           ),
         }}
       />
-      <Tab.Screen name="Donate" component={Donate} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="DonateMenu" component={Donate} />
+      <Tab.Screen name="ProfileMenu" component={Profile} />
     </Tab.Navigator>
   );
 };
