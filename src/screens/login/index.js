@@ -19,6 +19,10 @@ const screen = Dimensions.get('window');
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
   const [flag, setFlag] = useState({
     isShowPassword: true,
     isSubmitting: false,
@@ -51,6 +55,18 @@ const Login = ({navigation}) => {
     }));
   };
 
+  const setErrorMessage = error => {
+    let errObj = errors;
+    if (error !== undefined && Array.isArray(error)) {
+      for (let i = 0; i < error.length; i++) {
+        let key = error[i].param;
+        errObj[key] = error[i].msg;
+      }
+    }
+    console.log(errObj);
+    setErrors(errObj);
+  };
+
   const Login = async () => {
     toggleIsSubmitting(true);
     const data = {
@@ -59,9 +75,11 @@ const Login = ({navigation}) => {
     };
     const result = await post('login', JSON.stringify(data));
     if (result.success) {
-      toggleIsSubmitting(false);
       goToHome();
+    } else {
+      setErrorMessage(result.data);
     }
+    toggleIsSubmitting(false);
   };
 
   return (
@@ -79,6 +97,7 @@ const Login = ({navigation}) => {
             inputContainerStyle={{...Mixins.inputTextContainer}}
             textAlign="center"
             labelStyle={{...Mixins.label}}
+            errorMessage={errors.email}
           />
           <Input
             label="Password"
@@ -89,6 +108,7 @@ const Login = ({navigation}) => {
             textAlign="center"
             secureTextEntry={flag.isShowPassword}
             labelStyle={{...Mixins.label}}
+            errorMessage={errors.password}
             rightIcon={
               <TouchableWithoutFeedback onPress={toggleShowPassword}>
                 <Text
