@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {Button, Icon, Input} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
+// helper
+import {post} from '../../helpers/network';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -17,6 +19,10 @@ const screen = Dimensions.get('window');
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [flag, setFlag] = useState({
+    isShowPassword: true,
+    isSubmitting: false,
+  });
 
   const goToRegister = () => {
     navigation.navigate('Register');
@@ -29,6 +35,33 @@ const Login = ({navigation}) => {
         routes: [{name: 'Home'}],
       }),
     );
+  };
+
+  const toggleShowPassword = () => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isShowPassword: !flag.isShowPassword,
+    }));
+  };
+
+  const toggleIsSubmitting = bool => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSubmitting: bool,
+    }));
+  };
+
+  const Login = async () => {
+    toggleIsSubmitting(true);
+    const data = {
+      email: email,
+      password: password,
+    };
+    const result = await post('login', JSON.stringify(data));
+    if (result.success) {
+      toggleIsSubmitting(false);
+      goToHome();
+    }
   };
 
   return (
@@ -44,6 +77,7 @@ const Login = ({navigation}) => {
             onChangeText={text => setEmail(text)}
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
+            textAlign="center"
             labelStyle={{...Mixins.label}}
           />
           <Input
@@ -52,16 +86,31 @@ const Login = ({navigation}) => {
             onChangeText={text => setPassword(text)}
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
+            textAlign="center"
+            secureTextEntry={flag.isShowPassword}
             labelStyle={{...Mixins.label}}
+            rightIcon={
+              <TouchableWithoutFeedback onPress={toggleShowPassword}>
+                <Text
+                  style={
+                    flag.isShowPassword
+                      ? {textDecorationLine: 'none'}
+                      : {textDecorationLine: 'line-through'}
+                  }>
+                  Show
+                </Text>
+              </TouchableWithoutFeedback>
+            }
+            rightIconContainerStyle={{position: 'absolute', right: 10}}
           />
           <Button
-            title="Login"
-            onPress={goToHome}
+            title={flag.isSubmitting ? 'Submitting' : 'Login'}
+            onPress={Login}
             buttonStyle={styles.button}
             containerStyle={{marginTop: 20}}
             disabledTitleStyle={{color: Mixins.textWhite}}
             disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
-            disabled={email === '' || password === ''}
+            disabled={email === '' || password === '' || flag.isSubmitting}
           />
         </View>
         <View style={styles.sectionContainer}>
