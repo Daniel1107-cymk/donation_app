@@ -5,11 +5,14 @@ import {CommonActions} from '@react-navigation/native';
 import FirstStep from '../../components/register/firstStep';
 import SecondStep from '../../components/register/secondStep';
 import ThirdStep from '../../components/register/thirdStep';
+// helper
+import {post} from '../../helpers/network';
 // style
 import {Mixins} from '../../assets/mixins';
 
 const Register = ({navigation}) => {
   const [steps, setSteps] = useState(1);
+  const [errors, setErrors] = useState(null);
   const [firstForm, setFirstForm] = useState({
     email: '',
     password: '',
@@ -41,6 +44,33 @@ const Register = ({navigation}) => {
     // if fail
   };
 
+  const validatePasswordConfirmation = async () => {
+    if (firstForm.password !== firstForm.confirmPassword) {
+      let msg = [
+        {
+          msg: 'Password not match',
+          param: 'password',
+        },
+      ];
+      setErrors(msg);
+    } else {
+      setSteps(steps + 1);
+    }
+  };
+
+  const validateEmail = async () => {
+    setErrors(null);
+    const data = firstForm;
+    const body = JSON.stringify(data);
+    const result = await post('validate-email', body);
+    console.log(result);
+    if (result.success) {
+      validatePasswordConfirmation();
+    } else {
+      setErrors(result.data);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {steps === 1 && (
@@ -49,6 +79,8 @@ const Register = ({navigation}) => {
           setFirstForm={setFirstForm}
           steps={steps}
           setSteps={setSteps}
+          errors={errors}
+          validateEmail={validateEmail}
           navigation={navigation}
         />
       )}

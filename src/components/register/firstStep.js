@@ -20,6 +20,18 @@ const FirstStep = props => {
     props.navigation.navigate('Login');
   };
 
+  const checkError = inputName => {
+    let message = '';
+    if (props.errors !== null && Array.isArray(props.errors)) {
+      for (let i = 0; i < props.errors.length; i++) {
+        if (props.errors[i].param === inputName) {
+          message = props.errors[i].msg;
+        }
+      }
+    }
+    return message;
+  };
+
   return (
     <>
       <View style={styles.header}>
@@ -51,6 +63,9 @@ const FirstStep = props => {
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
+            textAlign="center"
+            errorMessage={checkError('email')}
+            rightIconContainerStyle={{position: 'absolute', right: 10}}
           />
           <Input
             label="Password"
@@ -78,6 +93,9 @@ const FirstStep = props => {
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
+            textAlign="center"
+            errorMessage={checkError('password')}
+            rightIconContainerStyle={{position: 'absolute', right: 10}}
           />
           <Input
             label="Confirm Password"
@@ -105,12 +123,14 @@ const FirstStep = props => {
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
+            textAlign="center"
+            rightIconContainerStyle={{position: 'absolute', right: 10}}
           />
           <Button
             title="Next"
             buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
             containerStyle={{marginTop: 20}}
-            onPress={() => props.setSteps(props.steps + 1)}
+            onPress={props.validateEmail}
             disabledTitleStyle={{color: Mixins.textWhite}}
             disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
             disabled={
