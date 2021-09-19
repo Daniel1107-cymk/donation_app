@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Button, Icon, Input} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 // helper
 import {post} from '../../helpers/network';
 // style
@@ -73,6 +74,15 @@ const Login = ({navigation}) => {
     };
     const result = await post('login', JSON.stringify(data));
     if (result.success) {
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Success',
+        text2: 'Login successful',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       goToHome();
     } else {
       setErrors(result.data);
