@@ -7,11 +7,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {Button, Icon, Input} from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 // helper
 import {post} from '../../helpers/network';
+import Session from '../../helpers/session';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -74,6 +75,7 @@ const Login = ({navigation}) => {
     };
     const result = await post('login', JSON.stringify(data));
     if (result.success) {
+      await Session.setValue('token', result.data.token);
       Toast.show({
         type: 'success',
         position: 'bottom',

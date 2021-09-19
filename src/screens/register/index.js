@@ -8,6 +8,7 @@ import SecondStep from '../../components/register/secondStep';
 import ThirdStep from '../../components/register/thirdStep';
 // helper
 import {post} from '../../helpers/network';
+import Session from '../../helpers/session';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -36,6 +37,7 @@ const Register = ({navigation}) => {
     let body = JSON.stringify(data);
     const result = await post('register', body);
     if (result.success) {
+      await Session.setValue('token', result.data.token);
       Toast.show({
         type: 'success',
         position: 'bottom',
