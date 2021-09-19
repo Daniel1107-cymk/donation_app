@@ -25,14 +25,21 @@ export const errorHandler = error => {
       showToast('You are not authorized, please login!');
       return {
         success: false,
-        data: data?.error ?? data,
+        data: data?.errors ?? data,
         redirect: true,
         status: 401,
+      };
+    case 400:
+      return {
+        success: false,
+        data: data?.errors ?? data,
+        redirect: false,
+        status: 422,
       };
     case 422:
       return {
         success: false,
-        data: data?.error ?? data,
+        data: data?.errors ?? data,
         redirect: false,
         status: 422,
       };
