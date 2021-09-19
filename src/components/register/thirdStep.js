@@ -35,29 +35,17 @@ const ThirdStep = props => {
         <View style={{flex: 0.5}}>
           <Input
             label="Phone Number"
-            value={props.thirdForm.phoneNumber}
+            value={props.thirdForm.phone_number}
             onChangeText={text =>
               props.setThirdForm(prevState => ({
                 ...prevState,
-                phoneNumber: text,
+                phone_number: text,
               }))
             }
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
-          />
-          <Input
-            label="Full Address"
-            value={props.thirdForm.fullAddress}
-            onChangeText={text =>
-              props.setThirdForm(prevState => ({
-                ...prevState,
-                fullAddress: text,
-              }))
-            }
-            containerStyle={{paddingHorizontal: 0}}
-            inputContainerStyle={{...Mixins.inputTextContainer}}
-            labelStyle={{...Mixins.label}}
+            textAlign="center"
           />
           <Button
             title="Register"
@@ -66,10 +54,7 @@ const ThirdStep = props => {
             onPress={() => props.submitRegister()}
             disabledTitleStyle={{color: Mixins.textWhite}}
             disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
-            disabled={
-              props.thirdForm.phoneNumber === '' ||
-              props.thirdForm.fullAddress === ''
-            }
+            disabled={props.thirdForm.phone_number === ''}
           />
           <Button
             title="Back"

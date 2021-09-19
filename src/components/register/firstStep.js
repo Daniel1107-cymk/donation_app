@@ -100,11 +100,11 @@ const FirstStep = props => {
           <Input
             label="Confirm Password"
             secureTextEntry={!showConfirmPassword}
-            value={props.firstForm.confirmPassword}
+            value={props.firstForm.confirm_password}
             onChangeText={text =>
               props.setFirstForm(prevState => ({
                 ...prevState,
-                confirmPassword: text,
+                confirm_password: text,
               }))
             }
             rightIcon={
@@ -136,7 +136,7 @@ const FirstStep = props => {
             disabled={
               props.firstForm.email === '' ||
               props.firstForm.password === '' ||
-              props.firstForm.confirmPassword === ''
+              props.firstForm.confirm_password === ''
             }
           />
         </View>

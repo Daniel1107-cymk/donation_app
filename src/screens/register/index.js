@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 // screen
 import FirstStep from '../../components/register/firstStep';
 import SecondStep from '../../components/register/secondStep';
@@ -16,36 +17,54 @@ const Register = ({navigation}) => {
   const [firstForm, setFirstForm] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
+    confirm_password: '',
   });
   const [secondForm, setSecondForm] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
   });
   const [thirdForm, setThirdForm] = useState({
-    phoneNumber: '',
-    fullAddress: '',
+    phone_number: '',
   });
 
-  const submitRegister = () => {
-    let body = {
+  const submitRegister = async () => {
+    let data = {
       ...firstForm,
       ...secondForm,
       ...thirdForm,
     };
-    // using axios for post
-    // if success save return token to storage
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Home'}],
-      }),
-    );
-    // if fail
+    let body = JSON.stringify(data);
+    const result = await post('register', body);
+    if (result.success) {
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Success',
+        text2: 'Register successful',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        }),
+      );
+    } else {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'error',
+        text2: 'Something wrong, please try again',
+        visibilityTime: 3,
+        autoHide: true,
+      });
+    }
   };
 
   const validatePasswordConfirmation = async () => {
-    if (firstForm.password !== firstForm.confirmPassword) {
+    if (firstForm.password !== firstForm.confirm_password) {
       let msg = [
         {
           msg: 'Password not match',
@@ -63,7 +82,6 @@ const Register = ({navigation}) => {
     const data = firstForm;
     const body = JSON.stringify(data);
     const result = await post('validate-email', body);
-    console.log(result);
     if (result.success) {
       validatePasswordConfirmation();
     } else {

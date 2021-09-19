@@ -35,29 +35,31 @@ const SecondStep = props => {
         <View style={{flex: 0.5}}>
           <Input
             label="First Name"
-            value={props.secondForm.firstName}
+            value={props.secondForm.first_name}
             onChangeText={text =>
               props.setSecondForm(prevState => ({
                 ...prevState,
-                firstName: text,
+                first_name: text,
               }))
             }
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
+            textAlign="center"
           />
           <Input
             label="Last Name"
-            value={props.secondForm.lastName}
+            value={props.secondForm.last_name}
             onChangeText={text =>
               props.setSecondForm(prevState => ({
                 ...prevState,
-                lastName: text,
+                last_name: text,
               }))
             }
             containerStyle={{paddingHorizontal: 0}}
             inputContainerStyle={{...Mixins.inputTextContainer}}
             labelStyle={{...Mixins.label}}
+            textAlign="center"
           />
           <Button
             title="Next"
@@ -67,8 +69,8 @@ const SecondStep = props => {
             disabledTitleStyle={{color: Mixins.textWhite}}
             disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
             disabled={
-              props.secondForm.firstName === '' ||
-              props.secondForm.lastName === ''
+              props.secondForm.first_name === '' ||
+              props.secondForm.last_name === ''
             }
           />
           <Button
