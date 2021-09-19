@@ -19,10 +19,7 @@ const screen = Dimensions.get('window');
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
+  const [errors, setErrors] = useState(null);
   const [flag, setFlag] = useState({
     isShowPassword: true,
     isSubmitting: false,
@@ -55,19 +52,20 @@ const Login = ({navigation}) => {
     }));
   };
 
-  const setErrorMessage = error => {
-    let errObj = errors;
-    if (error !== undefined && Array.isArray(error)) {
-      for (let i = 0; i < error.length; i++) {
-        let key = error[i].param;
-        errObj[key] = error[i].msg;
+  const checkError = inputName => {
+    let message = '';
+    if (errors !== null && Array.isArray(errors)) {
+      for (let i = 0; i < errors.length; i++) {
+        if (errors[i].param === inputName) {
+          message = errors[i].msg;
+        }
       }
     }
-    console.log(errObj);
-    setErrors(errObj);
+    return message;
   };
 
   const Login = async () => {
+    setErrors(null);
     toggleIsSubmitting(true);
     const data = {
       email: email,
@@ -77,7 +75,7 @@ const Login = ({navigation}) => {
     if (result.success) {
       goToHome();
     } else {
-      setErrorMessage(result.data);
+      setErrors(result.data);
     }
     toggleIsSubmitting(false);
   };
@@ -97,7 +95,7 @@ const Login = ({navigation}) => {
             inputContainerStyle={{...Mixins.inputTextContainer}}
             textAlign="center"
             labelStyle={{...Mixins.label}}
-            errorMessage={errors.email}
+            errorMessage={checkError('email')}
           />
           <Input
             label="Password"
@@ -108,7 +106,7 @@ const Login = ({navigation}) => {
             textAlign="center"
             secureTextEntry={flag.isShowPassword}
             labelStyle={{...Mixins.label}}
-            errorMessage={errors.password}
+            errorMessage={checkError('password')}
             rightIcon={
               <TouchableWithoutFeedback onPress={toggleShowPassword}>
                 <Text
