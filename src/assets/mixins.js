@@ -1,6 +1,6 @@
 export const Mixins = {
   bgHeader: '#035397',
-  bgPrimary: '#001E6C',
+  bgPrimary: '#035397',
   bgButtonPrimary: '#FFAA4C',
   bgButtonSecondary: '#ABABAB',
   textPrimary: '#000',
