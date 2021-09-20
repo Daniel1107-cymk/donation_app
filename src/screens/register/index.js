@@ -40,7 +40,7 @@ const Register = ({navigation}) => {
       await Session.setValue('token', result.data.token);
       Toast.show({
         type: 'success',
-        position: 'bottom',
+        position: 'top',
         text1: 'Success',
         text2: 'Register successful',
         visibilityTime: 1000,
@@ -56,7 +56,7 @@ const Register = ({navigation}) => {
     } else {
       Toast.show({
         type: 'error',
-        position: 'bottom',
+        position: 'top',
         text1: 'error',
         text2: 'Something wrong, please try again',
         visibilityTime: 3,

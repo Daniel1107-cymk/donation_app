@@ -78,7 +78,7 @@ const Login = ({navigation}) => {
       await Session.setValue('token', result.data.token);
       Toast.show({
         type: 'success',
-        position: 'bottom',
+        position: 'top',
         text1: 'Success',
         text2: 'Login successful',
         visibilityTime: 1000,
