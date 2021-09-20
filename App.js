@@ -7,7 +7,7 @@ import Session from './src/helpers/session';
 // screen
 import Login from './src/screens/login';
 import Register from './src/screens/register';
-import Home from './src/screens/home';
+import Menu from './src/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +21,7 @@ const App = () => {
     if (token === null) {
       setDefaultRoute('Login');
     } else {
-      setDefaultRoute('Home');
+      setDefaultRoute('Menu');
     }
   };
 
@@ -53,8 +53,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="Home"
-                component={Home}
+                name="Menu"
+                component={Menu}
                 options={() => ({
                   headerShown: false,
                 })}
