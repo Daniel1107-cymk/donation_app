@@ -9,14 +9,7 @@ const window = Dimensions.get('window');
 const QuoteCarousel = ({quoteData}) => {
   const renderItem = ({item, index}, parallaxProps) => {
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: Mixins.bgWhite,
-          borderRadius: 10,
-          maxHeight: window.height * 0.55,
-          minHeight: window.height * 0.55,
-        }}>
+      <View style={styles.itemContainer}>
         <ParallaxImage
           source={{uri: `data:${item.mimetype};base64,${item.image}`}}
           containerStyle={styles.imageContainer}
@@ -45,6 +38,22 @@ const QuoteCarousel = ({quoteData}) => {
 };
 
 const styles = StyleSheet.create({
+  itemContainer: {
+    marginTop: 20,
+    backgroundColor: Mixins.bgWhite,
+    borderRadius: 10,
+    maxHeight: window.height * 0.55,
+    minHeight: window.height * 0.55,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+  },
   imageContainer: {
     flex: 1,
     borderTopLeftRadius: 10,

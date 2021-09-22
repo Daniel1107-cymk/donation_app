@@ -3,6 +3,7 @@ export const Mixins = {
   bgPrimary: '#035397',
   bgButtonPrimary: '#FFAA4C',
   bgButtonSecondary: '#ABABAB',
+  bgWhite: '#FFF',
   textPrimary: '#000',
   textSecondary: '#ABABAB',
   textOrange: '#FFAA4C',
@@ -22,5 +23,15 @@ export const Mixins = {
     borderRadius: 5,
     paddingHorizontal: 10,
     height: 40,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  titleBold: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
   },
 };
