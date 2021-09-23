@@ -51,6 +51,7 @@ const Index = () => {
         name="DonateMenu"
         component={Donate}
         options={{
+          headerTitle: 'Donate',
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={
@@ -71,6 +72,7 @@ const Index = () => {
         name="ProfileMenu"
         component={Profile}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={

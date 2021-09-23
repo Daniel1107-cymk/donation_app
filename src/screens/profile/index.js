@@ -1,18 +1,25 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HeaderBackground} from '@react-navigation/elements';
+// screen
+import Profile from './profile';
 // style
 import {Mixins} from '../../assets/mixins';
 
-const Profile = () => {
-  return <SafeAreaView></SafeAreaView>;
+const Stack = createNativeStackNavigator();
+
+const ProfileNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Profile"
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTintColor: Mixins.textWhite,
+        headerStyle: {backgroundColor: Mixins.bgHeader},
+      }}>
+      <Stack.Screen name="Profile" component={Profile} />
+    </Stack.Navigator>
+  );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    ...Mixins.container,
-    backgroundColor: Mixins.bgPrimary,
-    flexDirection: 'column',
-  },
-});
-
-export default Profile;
+export default ProfileNavigator;
