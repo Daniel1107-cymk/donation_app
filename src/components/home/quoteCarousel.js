@@ -40,6 +40,7 @@ const QuoteCarousel = ({quoteData}) => {
 const styles = StyleSheet.create({
   itemContainer: {
     marginTop: 20,
+    marginBottom: 20,
     backgroundColor: Mixins.bgWhite,
     borderRadius: 10,
     maxHeight: window.height * 0.55,

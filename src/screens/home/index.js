@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 // component
 import QuoteCarousel from '../../components/home/quoteCarousel';
 import FaqItem from '../../components/home/faqItem';
@@ -32,8 +32,17 @@ const Home = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      {quoteData !== null && <QuoteCarousel quoteData={quoteData} />}
+    <SafeAreaView style={{flex: 1, backgroundColor: Mixins.bgWhite}}>
+      <ScrollView>
+        {quoteData !== null && <QuoteCarousel quoteData={quoteData} />}
+        <View style={styles.faqContainer}>
+          <View style={styles.faqTitleContainer}>
+            <Text style={Mixins.title}>FAQ</Text>
+          </View>
+          {faqData !== null &&
+            faqData.map(item => <FaqItem key={item._id} item={item} />)}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -43,8 +52,13 @@ const styles = StyleSheet.create({
     ...Mixins.container,
     flexDirection: 'column',
   },
+  faqTitleContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ABABAB',
+    paddingVertical: 5,
+  },
   faqContainer: {
-    backgroundColor: 'red',
+    backgroundColor: Mixins.bgWhite,
     margin: 20,
   },
 });
