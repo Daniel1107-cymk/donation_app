@@ -45,15 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     maxHeight: window.height * 0.55,
     minHeight: window.height * 0.55,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-
-    elevation: 1,
+    ...Mixins.defaultShadow,
   },
   imageContainer: {
     flex: 1,

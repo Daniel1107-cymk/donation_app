@@ -12,6 +12,23 @@ export const Mixins = {
     flex: 1,
     padding: 20,
   },
+  textBold: {
+    fontWeight: 'bold',
+  },
+  textBoldWhite: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  defaultShadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 1,
+  },
   label: {
     color: '#FFF',
     textAlign: 'center',
