@@ -3,6 +3,7 @@ import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 // component
 import QuoteCarousel from '../../components/home/quoteCarousel';
 import FaqItem from '../../components/home/faqItem';
+import Skeleton from '../../components/home/skeleton';
 // helper
 import {get} from '../../helpers/network';
 // style
@@ -11,11 +12,18 @@ import {Mixins} from '../../assets/mixins';
 const Home = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [faqData, setFaqData] = useState(null);
+  const [flag, setFlag] = useState({
+    isLoading: true,
+  });
 
   const getQuote = async () => {
     const result = await get('quote');
     if (result.success) {
       setQuoteData(result.data);
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        isLoading: false,
+      }));
     }
   };
 
@@ -26,23 +34,27 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    getQuote();
-    getFaqData();
+  useEffect(async () => {
+    await getFaqData();
+    await getQuote();
   }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Mixins.bgWhite}}>
-      <ScrollView>
-        {quoteData !== null && <QuoteCarousel quoteData={quoteData} />}
-        <View style={styles.faqContainer}>
-          <View style={styles.faqTitleContainer}>
-            <Text style={Mixins.title}>FAQ</Text>
+      {flag.isLoading ? (
+        <Skeleton />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {quoteData !== null && <QuoteCarousel quoteData={quoteData} />}
+          <View style={styles.faqContainer}>
+            <View style={styles.faqTitleContainer}>
+              <Text style={Mixins.title}>FAQ</Text>
+            </View>
+            {faqData !== null &&
+              faqData.map(item => <FaqItem key={item._id} item={item} />)}
           </View>
-          {faqData !== null &&
-            faqData.map(item => <FaqItem key={item._id} item={item} />)}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -59,7 +71,8 @@ const styles = StyleSheet.create({
   },
   faqContainer: {
     backgroundColor: Mixins.bgWhite,
-    margin: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
 });
 
