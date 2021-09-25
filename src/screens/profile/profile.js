@@ -4,6 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
 // component
 import OptionButton from '../../components/profile/optionButton';
+import Skeleton from '../../components/profile/skeleton';
 // helper
 import {get} from '../../helpers/network';
 // style
@@ -43,7 +44,7 @@ const Profile = () => {
   return (
     <SafeAreaView>
       {flag.isLoading ? (
-        <View></View>
+        <Skeleton />
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.profileContainer}>
