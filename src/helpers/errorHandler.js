@@ -1,15 +1,19 @@
-import {ToastAndroid} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 export const errorHandler = error => {
-  const showToast = message => {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  };
-
   const {status, data} = error.response;
 
   switch (status) {
     case 401:
-      showToast('You are not authorized, please login!');
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Unauthorized',
+        text2: `You'll be redirect to the login`,
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       return {
         success: false,
         data: null,
@@ -17,12 +21,17 @@ export const errorHandler = error => {
         status: 401,
       };
     case 403:
-      // do something when you're unauthorized to access a resource
-      console.log('unauthorized', error);
       break;
     case 404:
-      // do something when you're unauthorized to access a resource
-      showToast('You are not authorized, please login!');
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Not found',
+        text2: 'Something went wrong, please try again',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       return {
         success: false,
         data: data?.errors ?? data,
@@ -47,7 +56,15 @@ export const errorHandler = error => {
       console.log('server error', error);
       break;
     default:
-      showToast('Network connection problem, please try again!');
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Network error',
+        text2: 'Network connection problem, please try again!',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       return {
         success: false,
         data: null,
