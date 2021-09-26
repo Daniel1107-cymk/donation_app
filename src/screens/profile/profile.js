@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
 // component
@@ -7,10 +8,11 @@ import OptionButton from '../../components/profile/optionButton';
 import Skeleton from '../../components/profile/skeleton';
 // helper
 import {get} from '../../helpers/network';
+import Session from '../../helpers/tokenHandler';
 // style
 import {Mixins} from '../../assets/mixins';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
   const [flag, setFlag] = useState({
     isLoading: true,
@@ -35,6 +37,16 @@ const Profile = () => {
         bottomOffset: 20,
       });
     }
+  };
+
+  const logout = async () => {
+    await Session.removeToken('token');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Login'}],
+      }),
+    );
   };
 
   useEffect(async () => {
@@ -94,7 +106,7 @@ const Profile = () => {
             <OptionButton
               icon="sign-out-alt"
               title="Logout"
-              navigate={() => {}}
+              navigate={logout}
             />
           </View>
           <Text
