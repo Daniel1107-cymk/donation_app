@@ -7,7 +7,13 @@ export const Mixins = {
   textPrimary: '#000',
   textSecondary: '#ABABAB',
   textOrange: '#FFAA4C',
+  textBlue: '#035397',
   textWhite: '#FFFF',
+  textRed: 'red',
+  defaultBg: {
+    backgroundColor: '#FFF',
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 20,

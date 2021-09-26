@@ -39,6 +39,10 @@ const Profile = ({navigation}) => {
     }
   };
 
+  const navigateToAddressList = () => {
+    navigation.navigate('AddressList');
+  };
+
   const logout = async () => {
     await Session.removeToken('token');
     navigation.dispatch(
@@ -54,7 +58,7 @@ const Profile = ({navigation}) => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={Mixins.defaultBg}>
       {flag.isLoading ? (
         <Skeleton />
       ) : (
@@ -96,7 +100,7 @@ const Profile = ({navigation}) => {
             <OptionButton
               icon="list-alt"
               title="Manage Address"
-              navigate={() => {}}
+              navigate={navigateToAddressList}
             />
             <OptionButton
               icon="history"
