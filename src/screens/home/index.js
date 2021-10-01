@@ -6,10 +6,11 @@ import FaqItem from '../../components/home/faqItem';
 import Skeleton from '../../components/home/skeleton';
 // helper
 import {get} from '../../helpers/network';
+import {forceLogout} from '../../helpers/logout';
 // style
 import {Mixins} from '../../assets/mixins';
 
-const Home = () => {
+const Home = props => {
   const [quoteData, setQuoteData] = useState(null);
   const [faqData, setFaqData] = useState(null);
   const [flag, setFlag] = useState({
@@ -24,6 +25,10 @@ const Home = () => {
         ...prevFlag,
         isLoading: false,
       }));
+    } else {
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: props.navigation});
+      }
     }
   };
 
@@ -31,6 +36,10 @@ const Home = () => {
     const result = await get('faq');
     if (result.success) {
       setFaqData(result.data);
+    } else {
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: props.navigation});
+      }
     }
   };
 

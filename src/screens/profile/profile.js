@@ -27,15 +27,9 @@ const Profile = ({navigation}) => {
         isLoading: false,
       }));
     } else {
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Error',
-        text2: 'Something went wrong, please try again',
-        visibilityTime: 1000,
-        autoHide: true,
-        bottomOffset: 20,
-      });
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: props.navigation});
+      }
     }
   };
 
