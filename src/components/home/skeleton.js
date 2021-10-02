@@ -10,6 +10,11 @@ const skeleton = () => {
       <View style={styles.container}>
         <View style={styles.carousel} />
         <View style={styles.faqTitle} />
+        <View style={styles.row}>
+          <View style={styles.communityItem} />
+          <View style={styles.communityItem} />
+        </View>
+        <View style={styles.faqTitle} />
         <View style={styles.faqItem} />
         <View style={styles.faqItem} />
         <View style={styles.faqItem} />
@@ -41,6 +46,16 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     marginBottom: 10,
+  },
+  communityItem: {
+    height: 100,
+    width: window.width * 0.7,
+    borderRadius: 5,
+    marginBottom: 20,
+    marginRight: 20,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });
 

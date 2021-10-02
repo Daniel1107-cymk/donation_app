@@ -3,6 +3,7 @@ import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 // component
 import QuoteCarousel from '../../components/home/quoteCarousel';
 import FaqItem from '../../components/home/faqItem';
+import CommunityItem from '../../components/home/communityItem';
 import Skeleton from '../../components/home/skeleton';
 // helper
 import {get} from '../../helpers/network';
@@ -13,6 +14,7 @@ import {Mixins} from '../../assets/mixins';
 const Home = props => {
   const [quoteData, setQuoteData] = useState(null);
   const [faqData, setFaqData] = useState(null);
+  const [communityData, setCommunityData] = useState(null);
   const [flag, setFlag] = useState({
     isLoading: true,
   });
@@ -21,10 +23,6 @@ const Home = props => {
     const result = await get('quote');
     if (result.success) {
       setQuoteData(result.data);
-      setFlag(prevFlag => ({
-        ...prevFlag,
-        isLoading: false,
-      }));
     } else {
       if (result.status === 401 && result.redirect === true) {
         await forceLogout({navigation: props.navigation});
@@ -43,9 +41,25 @@ const Home = props => {
     }
   };
 
+  const getCommunity = async () => {
+    const result = await get('community');
+    if (result.success) {
+      setCommunityData(result.data);
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        isLoading: false,
+      }));
+    } else {
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: props.navigation});
+      }
+    }
+  };
+
   useEffect(async () => {
     await getFaqData();
     await getQuote();
+    await getCommunity();
   }, []);
 
   return (
@@ -56,6 +70,18 @@ const Home = props => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {quoteData !== null && <QuoteCarousel quoteData={quoteData} />}
           <View style={styles.faqContainer}>
+            <View style={styles.communityContainer}>
+              <Text style={Mixins.title}>Communities</Text>
+            </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.communityItem}>
+              {communityData !== null &&
+                communityData.map(item => (
+                  <CommunityItem key={item._id} item={item} />
+                ))}
+            </ScrollView>
             <View style={styles.faqTitleContainer}>
               <Text style={Mixins.title}>FAQ</Text>
             </View>
@@ -81,6 +107,12 @@ const styles = StyleSheet.create({
   faqContainer: {
     backgroundColor: Mixins.bgWhite,
     marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  communityContainer: {
+    paddingVertical: 5,
+  },
+  communityItem: {
     marginBottom: 20,
   },
 });
