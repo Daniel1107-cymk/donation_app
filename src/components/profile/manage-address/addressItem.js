@@ -5,19 +5,18 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 // style
 import {Mixins} from '../../../assets/mixins';
 
-const AddressItem = () => {
+const AddressItem = ({item}) => {
   return (
     <Card containerStyle={styles.cardContainer}>
       <View style={{flexDirection: 'row'}}>
-        <View style={{flex: 3, justifyContent: 'center'}}>
-          <Text style={styles.addressText}>Marina Park Blok Q No. 30</Text>
-          <Text style={styles.addressText}>City: Batam</Text>
-          <Text style={styles.addressText}>Zipcode: 29994</Text>
+        <View style={{flex: 4, justifyContent: 'center'}}>
+          <Text style={styles.addressText}>{item.address}</Text>
+          <Text style={styles.addressText}>{`City: ${item.city}`}</Text>
+          <Text style={styles.addressText}>{`Zipcode: ${item.zipcode}`}</Text>
         </View>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={styles.buttonContainer}>
           <Button
             TouchableComponent={TouchableOpacity}
-            title="edit"
             titleStyle={{color: Mixins.textBlue, marginLeft: 5}}
             icon={<Icon name="edit" size={20} color={Mixins.textBlue} />}
             type="clear"
@@ -41,6 +40,11 @@ const styles = StyleSheet.create({
   addressText: {
     color: Mixins.textPrimary,
     marginBottom: 3,
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
