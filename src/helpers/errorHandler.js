@@ -21,6 +21,15 @@ export const errorHandler = error => {
         status: 401,
       };
     case 403:
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Not found',
+        text2: 'Something went wrong, please try again',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       break;
     case 404:
       Toast.show({
@@ -39,6 +48,15 @@ export const errorHandler = error => {
         status: 401,
       };
     case 400:
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Not found',
+        text2: 'Something went wrong, please try again',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       return {
         success: false,
         data: data?.errors ?? data,
@@ -46,6 +64,15 @@ export const errorHandler = error => {
         status: 422,
       };
     case 422:
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Not found',
+        text2: 'Something went wrong, please try again',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       return {
         success: false,
         data: data?.errors ?? data,
@@ -53,6 +80,15 @@ export const errorHandler = error => {
         status: 422,
       };
     case 500:
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Not found',
+        text2: 'Something went wrong, please try again',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
       console.log('server error', error);
       break;
     default:

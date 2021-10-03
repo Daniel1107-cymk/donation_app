@@ -30,7 +30,7 @@ const Index = () => {
         name="HomeMenu"
         component={Home}
         options={{
-          headerTitle: 'Home',
+          headerShown: false,
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={
@@ -51,7 +51,7 @@ const Index = () => {
         name="DonateMenu"
         component={Donate}
         options={{
-          headerTitle: 'Donate',
+          headerShown: false,
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={

@@ -11,9 +11,13 @@ import {Mixins} from '../../assets/mixins';
 
 const window = Dimensions.get('window');
 
-const FaqItem = ({item}) => {
+const CommunityItem = ({item, navigation}) => {
+  const navigateToCommunity = () => {
+    navigation.navigate('Community', {communityId: item._id});
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => {}}>
+    <TouchableOpacity style={styles.container} onPress={navigateToCommunity}>
       <Image
         source={{uri: `data:${item.mimetype};base64,${item.banner}`}}
         style={styles.image}
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
     width: window.width * 0.7,
     height: 100,
     marginRight: 20,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     ...Mixins.defaultShadow,
@@ -48,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FaqItem;
+export default CommunityItem;
