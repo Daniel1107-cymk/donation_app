@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 // style
 import {Mixins} from '../../../assets/mixins';
 
-const AddressItem = ({item}) => {
+const AddressItem = ({item, toggleOverlay}) => {
   return (
     <Card containerStyle={styles.cardContainer}>
       <View style={{flexDirection: 'row'}}>
@@ -25,6 +25,7 @@ const AddressItem = ({item}) => {
             TouchableComponent={TouchableOpacity}
             icon={<Icon name="trash" size={20} color={Mixins.textRed} />}
             type="clear"
+            onPress={() => toggleOverlay(item)}
           />
         </View>
       </View>
