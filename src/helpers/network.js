@@ -50,4 +50,16 @@ const putData = async (path, data) => {
   }
 };
 
-export {getData as get, postData as post, putData as put};
+const deleteData = async path => {
+  try {
+    const response = await axiosInstance.delete(path);
+    return {
+      success: response.data.success,
+      data: response.data.data,
+    };
+  } catch (error) {
+    return errorHandler(error);
+  }
+};
+
+export {getData as get, postData as post, putData as put, deleteData as remove};
