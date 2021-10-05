@@ -12,6 +12,7 @@ const skeleton = () => {
         <View style={styles.container}>
           <View style={styles.counterContainer} />
         </View>
+        <View style={styles.title} />
         <View style={styles.faqItem} />
         <View style={styles.faqItem} />
         <View style={styles.faqItem} />
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     padding: 20,
+    paddingBottom: 0,
   },
   profileContainer: {
     width: '100%',
@@ -43,6 +45,13 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     marginBottom: 20,
+  },
+  title: {
+    marginHorizontal: 20,
+    width: 100,
+    height: 30,
+    borderRadius: 5,
+    marginBottom: 10,
   },
 });
 
