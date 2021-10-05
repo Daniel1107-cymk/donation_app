@@ -10,6 +10,13 @@ import {
 import {Button, Input} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import {
+  checkMultiple,
+  PERMISSIONS,
+  requestMultiple,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
 // helper
 import {post} from '../../helpers/network';
 import Session from '../../helpers/session';
@@ -66,7 +73,76 @@ const Login = ({navigation}) => {
     return message;
   };
 
+  const requestLocationPermission = () => {
+    requestMultiple([
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    ]).then(async statuses => {
+      if (
+        statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'blocked' ||
+        statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'blocked'
+      ) {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2:
+            'This app require location access. Please allow location permission!',
+          autoHide: false,
+          bottomOffset: 20,
+        });
+        setTimeout(() => {
+          openSettings();
+        }, 3000);
+      } else if (
+        statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === 'denied' ||
+        statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'denied'
+      ) {
+        requestLocationPermission();
+      }
+    });
+  };
+
+  const checkPermission = () => {
+    checkMultiple([
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    ])
+      .then(result => {
+        switch (result[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION]) {
+          case RESULTS.UNAVAILABLE:
+            break;
+          case RESULTS.DENIED:
+            requestLocationPermission();
+            break;
+          case RESULTS.LIMITED:
+            break;
+          case RESULTS.GRANTED:
+            break;
+          case RESULTS.BLOCKED:
+            requestLocationPermission();
+            break;
+        }
+        switch (result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]) {
+          case RESULTS.UNAVAILABLE:
+            break;
+          case RESULTS.DENIED:
+            requestLocationPermission();
+            break;
+          case RESULTS.LIMITED:
+            break;
+          case RESULTS.GRANTED:
+            break;
+          case RESULTS.BLOCKED:
+            requestLocationPermission();
+            break;
+        }
+      })
+      .catch(error => {});
+  };
+
   const Login = async () => {
+    checkPermission();
     setErrors(null);
     toggleIsSubmitting(true);
     const data = {
@@ -91,6 +167,10 @@ const Login = ({navigation}) => {
     }
     toggleIsSubmitting(false);
   };
+
+  useEffect(() => {
+    checkPermission();
+  });
 
   return (
     <SafeAreaView style={styles.container}>
