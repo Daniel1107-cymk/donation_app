@@ -16,6 +16,8 @@ target 'donation_app' do
 
   pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
 
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'donation_appTests' do
     inherit! :complete
     # Pods for testing
