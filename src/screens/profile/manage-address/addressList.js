@@ -11,7 +11,7 @@ import {forceLogout} from '../../../helpers/logout';
 // style
 import {Mixins} from '../../../assets/mixins';
 
-const AddressList = () => {
+const AddressList = props => {
   const [addressList, setAddressList] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [flag, setFlag] = useState({
@@ -72,6 +72,10 @@ const AddressList = () => {
     toggleOverlay(null);
   };
 
+  const navigateToAddressForm = () => {
+    props.navigation.navigate('AddressForm');
+  };
+
   useEffect(async () => {
     await getAddress();
   }, []);
@@ -84,7 +88,11 @@ const AddressList = () => {
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <Text style={styles.title}>Address List</Text>
-            <Button title="+ new address" buttonStyle={styles.button} />
+            <Button
+              title="+ new address"
+              buttonStyle={styles.button}
+              onPress={navigateToAddressForm}
+            />
           </View>
           <FlatList
             data={addressList}

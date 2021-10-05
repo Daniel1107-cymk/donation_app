@@ -28,7 +28,7 @@ const Profile = ({navigation}) => {
       }));
     } else {
       if (result.status === 401 && result.redirect === true) {
-        await forceLogout({navigation: props.navigation});
+        await forceLogout({navigation: navigation});
       }
     }
   };
