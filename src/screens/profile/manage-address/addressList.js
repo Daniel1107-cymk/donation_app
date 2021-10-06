@@ -76,8 +76,10 @@ const AddressList = props => {
     props.navigation.navigate('AddressForm');
   };
 
-  useEffect(async () => {
-    await getAddress();
+  useEffect(() => {
+    props.navigation.addListener('focus', async () => {
+      await getAddress();
+    });
   }, []);
 
   return (

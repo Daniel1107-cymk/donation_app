@@ -8,7 +8,7 @@ import Geolocation from 'react-native-geolocation-service';
 // component
 import Skeleton from '../../../components/profile/manage-address/addressFormSkeleton';
 // helper
-import {get, remove} from '../../../helpers/network';
+import {post} from '../../../helpers/network';
 import {forceLogout} from '../../../helpers/logout';
 // style
 import {Mixins} from '../../../assets/mixins';
@@ -28,6 +28,7 @@ const AddressForm = props => {
   });
   const [flag, setFlag] = useState({
     isLoading: true,
+    isSubmitting: false,
   });
 
   const onRegionChange = region => {
@@ -70,6 +71,53 @@ const AddressForm = props => {
       }
     }
     return message;
+  };
+
+  const toggleIsSubmitting = bool => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSubmitting: bool,
+    }));
+  };
+
+  const submit = async () => {
+    toggleIsSubmitting(true);
+    setErrors(null);
+    const data = {
+      address: fullAddress,
+      city: city,
+      zipcode: zipCode,
+      latitude: mapData.region.latitude,
+      longitude: mapData.region.longitude,
+    };
+    const result = await post('address', JSON.stringify(data));
+    if (result.success) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Success',
+        text2: 'Address added successfully',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
+      props.navigation.navigate('AddressList');
+    } else {
+      setErrors(result.data);
+    }
+    toggleIsSubmitting(false);
+  };
+
+  const disableButton = () => {
+    if (
+      fullAddress === '' ||
+      city === '' ||
+      zipCode === '' ||
+      flag.isSubmitting
+    ) {
+      return true;
+    }
+    return false;
   };
 
   useEffect(async () => {
@@ -128,38 +176,39 @@ const AddressForm = props => {
               containerStyle={{paddingHorizontal: 0}}
               inputContainerStyle={{...Mixins.inputTextContainer}}
               labelStyle={styles.label}
-              errorMessage={checkError('fullAddress')}
+              errorMessage={checkError('address')}
             />
             <View style={{flex: 1, flexDirection: 'row'}}>
               <Input
                 label="City"
                 placeholder="Ex: Valdosta"
                 value={city}
-                onChangeText={text => setFullAddress(text)}
+                onChangeText={text => setCity(text)}
                 containerStyle={{paddingHorizontal: 0, flex: 1, marginRight: 5}}
                 inputContainerStyle={{...Mixins.inputTextContainer}}
                 labelStyle={styles.label}
-                errorMessage={checkError('fullAddress')}
+                errorMessage={checkError('city')}
               />
               <Input
                 label="Zipcode"
                 placeholder="Ex: 31601"
                 value={zipCode}
-                onChangeText={text => setFullAddress(text)}
+                onChangeText={text => setZipcode(text.replace(/[^0-9]/g, ''))}
                 containerStyle={{paddingHorizontal: 0, flex: 1, marginLeft: 5}}
                 inputContainerStyle={{...Mixins.inputTextContainer}}
                 labelStyle={styles.label}
-                errorMessage={checkError('fullAddress')}
+                keyboardType="number-pad"
+                errorMessage={checkError('zipcode')}
               />
             </View>
             <Button
               title="Save"
-              onPress={() => {}}
+              onPress={submit}
               buttonStyle={styles.button}
               containerStyle={{marginTop: 20}}
               disabledTitleStyle={{color: Mixins.textWhite}}
               disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
-              disabled={fullAddress === '' || city === '' || zipCode}
+              disabled={disableButton()}
             />
           </View>
         </>
