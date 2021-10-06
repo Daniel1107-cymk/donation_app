@@ -72,8 +72,12 @@ const AddressList = props => {
     toggleOverlay(null);
   };
 
-  const navigateToAddressForm = () => {
-    props.navigation.navigate('AddressForm');
+  const navigateToAddressForm = data => {
+    if (data !== undefined) {
+      props.navigation.navigate('AddressForm', {addressData: data});
+    } else {
+      props.navigation.navigate('AddressForm');
+    }
   };
 
   useEffect(() => {
@@ -93,13 +97,17 @@ const AddressList = props => {
             <Button
               title="+ new address"
               buttonStyle={styles.button}
-              onPress={navigateToAddressForm}
+              onPress={() => navigateToAddressForm()}
             />
           </View>
           <FlatList
             data={addressList}
             renderItem={({item}) => (
-              <AddressItem item={item} toggleOverlay={toggleOverlay} />
+              <AddressItem
+                item={item}
+                toggleOverlay={toggleOverlay}
+                navigate={navigateToAddressForm}
+              />
             )}
             keyExtractor={item => item._id}
             showsVerticalScrollIndicator={false}

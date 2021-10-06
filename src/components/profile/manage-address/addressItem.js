@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 // style
 import {Mixins} from '../../../assets/mixins';
 
-const AddressItem = ({item, toggleOverlay}) => {
+const AddressItem = ({item, toggleOverlay, navigate}) => {
   return (
     <Card containerStyle={styles.cardContainer}>
       <View style={{flexDirection: 'row'}}>
@@ -20,6 +20,7 @@ const AddressItem = ({item, toggleOverlay}) => {
             titleStyle={{color: Mixins.textBlue, marginLeft: 5}}
             icon={<Icon name="edit" size={20} color={Mixins.textBlue} />}
             type="clear"
+            onPress={() => navigate(item)}
           />
           <Button
             TouchableComponent={TouchableOpacity}

@@ -8,7 +8,7 @@ import Geolocation from 'react-native-geolocation-service';
 // component
 import Skeleton from '../../../components/profile/manage-address/addressFormSkeleton';
 // helper
-import {post} from '../../../helpers/network';
+import {post, put} from '../../../helpers/network';
 import {forceLogout} from '../../../helpers/logout';
 // style
 import {Mixins} from '../../../assets/mixins';
@@ -19,9 +19,13 @@ const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = (window.width / window.height) * LATITUDE_DELTA;
 
 const AddressForm = props => {
-  const [fullAddress, setFullAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [zipCode, setZipcode] = useState('');
+  const [fullAddress, setFullAddress] = useState(
+    props.route.params?.addressData.address ?? '',
+  );
+  const [city, setCity] = useState(props.route.params?.addressData.city ?? '');
+  const [zipCode, setZipcode] = useState(
+    props.route.params?.addressData.zipcode.toString() ?? '',
+  );
   const [errors, setErrors] = useState(null);
   const [mapData, setMapData] = useState({
     region: null,
@@ -29,6 +33,7 @@ const AddressForm = props => {
   const [flag, setFlag] = useState({
     isLoading: true,
     isSubmitting: false,
+    isEditting: props.route.params?.addressData !== undefined ? true : false,
   });
 
   const onRegionChange = region => {
@@ -61,6 +66,23 @@ const AddressForm = props => {
     );
   };
 
+  const loadLatLongData = () => {
+    const data = props.route.params.addressData;
+    setMapData(prevMapData => ({
+      ...prevMapData,
+      region: {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
+    }));
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isLoading: false,
+    }));
+  };
+
   const checkError = inputName => {
     let message = '';
     if (errors !== null && Array.isArray(errors)) {
@@ -90,13 +112,20 @@ const AddressForm = props => {
       latitude: mapData.region.latitude,
       longitude: mapData.region.longitude,
     };
-    const result = await post('address', JSON.stringify(data));
+    const result = flag.isEditting
+      ? await put(
+          `update-address/${props.route.params.addressData._id}`,
+          JSON.stringify(data),
+        )
+      : await post('address', JSON.stringify(data));
     if (result.success) {
       Toast.show({
         type: 'success',
         position: 'top',
         text1: 'Success',
-        text2: 'Address added successfully',
+        text2: flag.isEditting
+          ? 'Address updated successfully'
+          : 'Address added successfully',
         visibilityTime: 1000,
         autoHide: true,
         bottomOffset: 20,
@@ -121,7 +150,11 @@ const AddressForm = props => {
   };
 
   useEffect(async () => {
-    getCurrentPosition();
+    if (props.route.params?.addressData !== undefined) {
+      loadLatLongData();
+    } else {
+      getCurrentPosition();
+    }
   }, []);
 
   return (
