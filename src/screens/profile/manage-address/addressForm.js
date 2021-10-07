@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
@@ -166,7 +173,7 @@ const AddressForm = props => {
           <View style={styles.map}>
             <MapView
               provider={PROVIDER_GOOGLE}
-              initialRegion={mapData.region}
+              region={mapData.region}
               style={{
                 backgroundColor: 'transparent',
                 width: window.width,
@@ -198,6 +205,11 @@ const AddressForm = props => {
               color={Mixins.textBlue}
               style={{position: 'absolute', bottom: '50.5%'}}
             />
+            <TouchableOpacity
+              onPress={getCurrentPosition}
+              style={styles.currentPositionButton}>
+              <Icon name="map-pin" size={15} color={Mixins.textBlue} />
+            </TouchableOpacity>
           </View>
           <View style={Mixins.container}>
             <Text style={Mixins.titleBold}>Address Details</Text>
@@ -267,9 +279,20 @@ const styles = StyleSheet.create({
     color: Mixins.textPrimary,
     textAlign: 'left',
   },
-
   button: {
     backgroundColor: Mixins.bgButtonPrimary,
+  },
+  currentPositionButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    borderRadius: 35,
+    width: 35,
+    height: 35,
+    backgroundColor: '#FFF',
+    ...Mixins.defaultShadow,
   },
 });
 
