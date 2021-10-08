@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 import OptionButton from '../../components/profile/optionButton';
 import Skeleton from '../../components/profile/skeleton';
 // helper
-import {get} from '../../helpers/network';
+import {get, post} from '../../helpers/network';
 import Session from '../../helpers/tokenHandler';
 // style
 import {Mixins} from '../../assets/mixins';
@@ -38,13 +38,25 @@ const Profile = ({navigation}) => {
   };
 
   const logout = async () => {
-    await Session.removeToken('token');
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      }),
-    );
+    const result = await post('logout');
+    if (result.success) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Success',
+        text2: 'Logout successful',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
+      await Session.removeToken('token');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        }),
+      );
+    }
   };
 
   useEffect(async () => {
