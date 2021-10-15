@@ -29,7 +29,8 @@ const ThirdDonateForm = props => {
 
   const onChangeText = (index, inputKey, text) => {
     let productList = [...props.thirdForm];
-    productList[index][inputKey] = text.replace(/[^0-9]/g, '');
+    productList[index][inputKey] =
+      inputKey === 'product_name' ? text : text.replace(/[^0-9]/g, '');
     props.setThirdForm(productList);
   };
 
