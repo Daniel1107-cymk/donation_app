@@ -46,7 +46,6 @@ export const Mixins = {
     borderBottomWidth: 0,
     borderRadius: 5,
     paddingHorizontal: 10,
-    height: 40,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
