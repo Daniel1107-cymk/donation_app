@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 // screen
 import FirstDonateForm from './firstForm';
 import SecondDonateForm from './secondForm';
+import ThirdDonateForm from './thirdForm';
 // helper
 import {post, get} from '../../helpers/network';
 import Session from '../../helpers/session';
@@ -23,11 +24,22 @@ const Donate = ({navigation}) => {
     selectedAddressListIndex: null,
     addressId: null,
   });
+  const [thirdForm, setThirdForm] = useState([
+    {
+      product_name: '',
+      quantity: '',
+      weight: '',
+    },
+  ]);
 
   const getAddress = async () => {
     const result = await get('address');
     if (result.success) {
       setAddressList(result.data);
+      setSecondForm(prevState => ({
+        ...prevState,
+        addressId: result.data[0]._id,
+      }));
     } else {
       if (result.status === 401 && result.redirect === true) {
         await forceLogout({navigation: props.navigation});
@@ -63,6 +75,15 @@ const Donate = ({navigation}) => {
           setSteps={setSteps}
           setSecondForm={setSecondForm}
           addressList={addressList}
+        />
+      )}
+      {steps === 3 && (
+        <ThirdDonateForm
+          navigation={navigation}
+          steps={steps}
+          setSteps={setSteps}
+          thirdForm={thirdForm}
+          setThirdForm={setThirdForm}
         />
       )}
     </SafeAreaView>
