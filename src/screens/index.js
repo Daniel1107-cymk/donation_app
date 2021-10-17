@@ -48,9 +48,10 @@ const Index = () => {
         }}
       />
       <Tab.Screen
-        name="DonateMenu"
+        name="DonationMenu"
         component={Donate}
         options={{
+          headerShown: false,
           title: 'Donate',
           tabBarIcon: ({focused, color, style}) => (
             <View

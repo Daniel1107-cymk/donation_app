@@ -11,7 +11,7 @@ import {
 import {Button, Card} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 // component
-import Skeleton from '../../components/home/community/skeleton';
+import Skeleton from '../../components/donate/community/skeleton';
 // helper
 import {get} from '../../helpers/network';
 // style
@@ -19,7 +19,7 @@ import {Mixins} from '../../assets/mixins';
 
 const window = Dimensions.get('window');
 
-const Community = props => {
+const CommunityDetails = props => {
   const [communityData, setCommunityData] = useState(null);
   const [flag, setFlag] = useState({
     isLoading: true,
@@ -38,6 +38,10 @@ const Community = props => {
         await forceLogout({navigation: props.navigation});
       }
     }
+  };
+
+  const navigateToDonation = () => {
+    props.navigation.navigate('Donation', {communityId: communityData._id});
   };
 
   useEffect(async () => {
@@ -71,6 +75,7 @@ const Community = props => {
                   style={{marginRight: 5}}
                 />
               }
+              onPress={navigateToDonation}
             />
             <Card containerStyle={styles.cardContainer}>
               <Text style={styles.cardTitle}>About Our Community</Text>
@@ -137,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Community;
+export default CommunityDetails;

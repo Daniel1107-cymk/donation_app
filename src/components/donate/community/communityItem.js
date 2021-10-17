@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 // style
-import {Mixins} from '../../assets/mixins';
+import {Mixins} from '../../../assets/mixins';
 
 const window = Dimensions.get('window');
 
 const CommunityItem = ({item, navigation}) => {
   const navigateToCommunity = () => {
-    navigation.navigate('Community', {communityId: item._id});
+    navigation.navigate('DonationMenu', {
+      screen: 'CommunityDetails',
+      params: {communityId: item._id},
+    });
   };
 
   return (

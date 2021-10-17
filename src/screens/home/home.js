@@ -3,7 +3,7 @@ import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 // component
 import QuoteCarousel from '../../components/home/quoteCarousel';
 import FaqItem from '../../components/home/faqItem';
-import CommunityItem from '../../components/home/communityItem';
+import CommunityItem from '../../components/donate/community/communityItem';
 import Skeleton from '../../components/home/skeleton';
 // helper
 import {get} from '../../helpers/network';
