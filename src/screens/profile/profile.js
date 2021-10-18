@@ -37,6 +37,10 @@ const Profile = ({navigation}) => {
     navigation.navigate('AddressList');
   };
 
+  const navigateToDonationHistory = () => {
+    navigation.navigate('DonationHistory');
+  };
+
   const logout = async () => {
     const result = await post('logout');
     if (result.success) {
@@ -111,7 +115,7 @@ const Profile = ({navigation}) => {
             <OptionButton
               icon="history"
               title="Donation History"
-              navigate={() => {}}
+              navigate={navigateToDonationHistory}
             />
             <OptionButton
               icon="sign-out-alt"

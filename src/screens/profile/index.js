@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Profile from './profile';
 import AddressList from './manage-address/addressList';
 import AddressForm from './manage-address/addressForm';
+import DonationHistory from './donation-history/historyList';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -28,6 +29,11 @@ const ProfileNavigator = () => {
         name="AddressForm"
         component={AddressForm}
         options={{title: 'Manage Address'}}
+      />
+      <Stack.Screen
+        name="DonationHistory"
+        component={DonationHistory}
+        options={{title: 'Donation History'}}
       />
     </Stack.Navigator>
   );
