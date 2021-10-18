@@ -42,7 +42,7 @@ const Home = props => {
   };
 
   const getCommunity = async () => {
-    const result = await get('community');
+    const result = await get('community?max=5');
     if (result.success) {
       setCommunityData(result.data);
       setFlag(prevFlag => ({
