@@ -35,39 +35,49 @@ const ThirdDonateForm = props => {
   };
 
   return (
-    <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-      <View style={Mixins.container}>
-        <Text style={styles.title}>Goods Details</Text>
-        {props.thirdForm.map((product, index) => (
-          <GoodsDetailItem
-            key={index}
-            index={index}
-            product={product}
-            setThirdForm={props.setThirdForm}
-            onChangeText={onChangeText}
-            removeProduct={removeProduct}
-          />
-        ))}
-        <Button
-          type="clear"
-          icon={
-            <Icon
-              name="add-circle-outline"
-              size={24}
-              color={Mixins.bgPrimary}
+    <View style={{flex: 1}}>
+      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+        <View style={Mixins.container}>
+          <Text style={styles.title}>Goods Details</Text>
+          {props.thirdForm.map((product, index) => (
+            <GoodsDetailItem
+              key={index}
+              index={index}
+              product={product}
+              setThirdForm={props.setThirdForm}
+              onChangeText={onChangeText}
+              removeProduct={removeProduct}
             />
-          }
-          containerStyle={styles.blueButton}
-          onPress={addProduct}
-        />
+          ))}
+          <Button
+            type="clear"
+            icon={
+              <Icon
+                name="add-circle-outline"
+                size={24}
+                color={Mixins.bgPrimary}
+              />
+            }
+            containerStyle={styles.blueButton}
+            onPress={addProduct}
+          />
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
         <Button
           title="Next"
           buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
-          containerStyle={{marginTop: 20, marginBottom: 40}}
+          containerStyle={{marginBottom: 20}}
           onPress={() => props.setSteps(props.steps + 1)}
         />
+        <Button
+          title="Back"
+          buttonStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+          containerStyle={{marginBottom: 20}}
+          onPress={() => props.setSteps(props.steps - 1)}
+        />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -79,7 +89,11 @@ const styles = StyleSheet.create({
   },
   blueButton: {
     borderWidth: 1,
+    borderRadius: 5,
     borderColor: Mixins.bgPrimary,
+  },
+  buttonContainer: {
+    paddingHorizontal: 20,
   },
 });
 
