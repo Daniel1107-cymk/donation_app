@@ -11,7 +11,7 @@ import {
 import {Button, Card} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 // component
-import Skeleton from '../../components/donate/community/skeleton';
+import Skeleton from '../../components/donate/community/communityDetailsSkeleton';
 // helper
 import {get} from '../../helpers/network';
 // style

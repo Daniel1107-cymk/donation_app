@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 // component
 import CommunityListItem from '../../components/donate/community/communityListItem';
+import Skeleton from '../../components/donate/community/communityListSkeleton';
 // helper
 import {get} from '../../helpers/network';
 import {forceLogout} from '../../helpers/logout';
@@ -36,7 +37,7 @@ const CommunityList = props => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Mixins.bgWhite}}>
       {flag.isLoading ? (
-        <View />
+        <Skeleton />
       ) : (
         <View style={styles.container}>
           <View style={styles.communityContainer}>
