@@ -23,6 +23,7 @@ const Index = () => {
             <HeaderBackground style={{backgroundColor: Mixins.bgHeader}} />
           );
         },
+        headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {height: 60},
       }}>
@@ -30,7 +31,6 @@ const Index = () => {
         name="HomeMenu"
         component={Home}
         options={{
-          headerShown: false,
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={
@@ -51,8 +51,6 @@ const Index = () => {
         name="DonationMenu"
         component={Donate}
         options={{
-          headerShown: false,
-          title: 'Donate',
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={
@@ -73,7 +71,6 @@ const Index = () => {
         name="ProfileMenu"
         component={Profile}
         options={{
-          headerShown: false,
           tabBarIcon: ({focused, color, style}) => (
             <View
               style={

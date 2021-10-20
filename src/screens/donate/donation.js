@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 // screen
 import FirstDonateForm from './firstForm';
 import SecondDonateForm from './secondForm';
 import ThirdDonateForm from './thirdForm';
+import ForthDonateForm from './forthForm';
 // helper
 import {post, get} from '../../helpers/network';
-import Session from '../../helpers/session';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -84,6 +82,13 @@ const Donation = ({navigation}) => {
           setSteps={setSteps}
           thirdForm={thirdForm}
           setThirdForm={setThirdForm}
+        />
+      )}
+      {steps === 4 && (
+        <ForthDonateForm
+          navigation={navigation}
+          steps={steps}
+          setSteps={setSteps}
         />
       )}
     </SafeAreaView>
