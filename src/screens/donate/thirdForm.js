@@ -34,6 +34,17 @@ const ThirdDonateForm = props => {
     props.setThirdForm(productList);
   };
 
+  const disableButton = () => {
+    let data = props.thirdForm.find(
+      el => el.product_name === '' || el.quantity === '' || el.weight === '',
+    );
+    if (data === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
@@ -68,6 +79,9 @@ const ThirdDonateForm = props => {
           title="Next"
           buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
           containerStyle={{marginBottom: 20}}
+          disabled={disableButton()}
+          disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+          disabledTitleStyle={{color: Mixins.textWhite}}
           onPress={() => props.setSteps(props.steps + 1)}
         />
         <Button

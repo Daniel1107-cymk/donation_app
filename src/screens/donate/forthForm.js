@@ -68,6 +68,9 @@ const ForthDonateForm = props => {
         title="Submit"
         buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
         containerStyle={styles.buttonContainer}
+        disabled={donationPhotos.length === 0}
+        disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+        disabledTitleStyle={{color: Mixins.textWhite}}
         onPress={() => {}}
       />
       <Button
@@ -95,6 +98,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   blueButton: {
+    flex: 1,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: Mixins.bgPrimary,
