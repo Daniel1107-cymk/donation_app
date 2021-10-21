@@ -1,14 +1,15 @@
 import React, {useState, useRef} from 'react';
 import {
   Dimensions,
+  Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {useSelector, useDispatch} from 'react-redux';
 import {Mixins} from '../../assets/mixins';
+import Icon from 'react-native-vector-icons/dist/Ionicons';
 // actions
 import {addDonationPhoto} from '../../actions/donationPhotos';
 
@@ -20,29 +21,62 @@ const Camera = props => {
     state => state.donationPhotosReducer.donationPhotos,
   );
   const cameraEl = useRef(null);
+  const [data, setData] = useState(null);
 
   const takePicture = async () => {
     if (cameraEl) {
       const options = {quality: 0.5};
       const data = await cameraEl.current.takePictureAsync(options);
+      setData(data.uri);
+    }
+  };
+
+  const confirm = action => {
+    if (action) {
       let newDonationPhotos = [...donationPhotos];
-      newDonationPhotos.push(data.uri);
+      newDonationPhotos.push(data);
       dispatch(addDonationPhoto(newDonationPhotos));
       props.navigation.navigate('Donation');
+    } else {
+      setData(null);
     }
   };
 
   return (
     <View style={styles.container}>
-      <RNCamera
-        ref={cameraEl}
-        style={styles.preview}
-        type={RNCamera.Constants.Type.back}
-        captureAudio={false}
-      />
-      <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={takePicture} style={styles.button} />
-      </View>
+      {data === null ? (
+        <>
+          <RNCamera
+            ref={cameraEl}
+            style={styles.preview}
+            type={RNCamera.Constants.Type.back}
+            captureAudio={false}
+          />
+          <View style={styles.singleButtonContainer}>
+            <TouchableOpacity onPress={takePicture} style={styles.button} />
+          </View>
+        </>
+      ) : (
+        <>
+          <Image source={{uri: data}} style={styles.preview} />
+          <View style={styles.doubleButtoncontainer}>
+            <TouchableOpacity onPress={() => confirm(false)}>
+              <Icon
+                name="close-circle-outline"
+                size={70}
+                color={Mixins.bgWhite}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => confirm(true)}>
+              <Icon
+                name="checkmark-circle-outline"
+                size={70}
+                color={Mixins.bgWhite}
+              />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -56,6 +90,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  singleButtonContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  doubleButtoncontainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   button: {
     position: 'absolute',
