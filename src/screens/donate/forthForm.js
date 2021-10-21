@@ -1,18 +1,49 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button, Image} from 'react-native-elements';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Button, Image, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 // style
 import {Mixins} from '../../assets/mixins';
+// actions
+import {addDonationPhoto} from '../../actions/donationPhotos';
+
+const window = Dimensions.get('window');
 
 const ForthDonateForm = props => {
+  const dispatch = useDispatch();
   const donationPhotos = useSelector(
     state => state.donationPhotosReducer.donationPhotos,
   );
+  const [index, setIndex] = useState(null);
+  const [flag, setFlag] = useState({
+    isShowOverlay: false,
+  });
 
   const navigateToCamera = () => {
     props.navigation.navigate('Camera');
+  };
+
+  const showOverlay = index => {
+    setIndex(index);
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isShowOverlay: !flag.isShowOverlay,
+    }));
+  };
+
+  const deletePhotos = action => {
+    let newDonationPhotos = [...donationPhotos];
+    newDonationPhotos.splice(index, 1);
+    dispatch(addDonationPhoto(newDonationPhotos));
+    showOverlay(null);
   };
 
   return (
@@ -24,11 +55,13 @@ const ForthDonateForm = props => {
             {donationPhotos.length > 0 ? (
               <>
                 {donationPhotos.map((uri, index) => (
-                  <Image
-                    key={index}
-                    source={{uri: uri}}
-                    style={styles.images}
-                  />
+                  <TouchableOpacity onPress={() => showOverlay(index)}>
+                    <Image
+                      key={index}
+                      source={{uri: uri}}
+                      style={styles.images}
+                    />
+                  </TouchableOpacity>
                 ))}
                 <Button
                   type="clear"
@@ -79,6 +112,19 @@ const ForthDonateForm = props => {
         containerStyle={styles.buttonContainer}
         onPress={() => props.setSteps(props.steps - 1)}
       />
+      <Overlay
+        visible={flag.isShowOverlay}
+        onBackdropPress={() => showOverlay(null)}>
+        {index !== null && (
+          <Image
+            source={{uri: donationPhotos[index]}}
+            style={styles.previewPhotos}
+          />
+        )}
+        <TouchableOpacity style={styles.deleteButton} onPress={deletePhotos}>
+          <Icon name="trash-outline" size={50} color={Mixins.bgWhite} />
+        </TouchableOpacity>
+      </Overlay>
     </>
   );
 };
@@ -126,6 +172,15 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginBottom: 20,
     paddingHorizontal: 20,
+  },
+  previewPhotos: {
+    width: window.width * 0.8,
+    height: window.height * 0.7,
+  },
+  deleteButton: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
 });
 
