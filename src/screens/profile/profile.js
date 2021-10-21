@@ -9,6 +9,7 @@ import Skeleton from '../../components/profile/skeleton';
 // helper
 import {get, post} from '../../helpers/network';
 import Session from '../../helpers/tokenHandler';
+import {forceLogout} from '../../helpers/logout';
 // style
 import {Mixins} from '../../assets/mixins';
 
