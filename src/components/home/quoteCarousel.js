@@ -33,6 +33,8 @@ const QuoteCarousel = ({quoteData}) => {
       data={quoteData}
       renderItem={renderItem}
       hasParallaxImages={true}
+      autoplay={true}
+      autoplayInterval={10000}
     />
   );
 };
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
   description: {
     paddingHorizontal: 10,
     fontSize: 14,
+    textAlign: 'center',
   },
 });
 
