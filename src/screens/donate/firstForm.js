@@ -1,11 +1,18 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+// helper
+import Format from '../../helpers/format';
 // style
 import {Mixins} from '../../assets/mixins';
 
 const FirstDonateForm = props => {
+  const date = new Date();
+  const [show, setShow] = useState(false);
+  const [minDate, setMinDate] = useState(date.setDate(date.getDate() + 3));
+
   return (
     <>
       <View style={{flex: 1}}>
@@ -38,6 +45,29 @@ const FirstDonateForm = props => {
           keyboardType="phone-pad"
         />
         <Text style={styles.title}>Donation Details</Text>
+        <Text style={styles.label}>Pick Up Date*</Text>
+        <TouchableOpacity
+          style={styles.datePickerContainer}
+          onPress={() => setShow(true)}>
+          <Text style={Mixins.textSecondary}>
+            {Format.formatDate(props.firstForm.date)}
+          </Text>
+        </TouchableOpacity>
+        {show && (
+          <DateTimePicker
+            value={new Date(props.firstForm.date)}
+            mode="date"
+            display="calendar"
+            minimumDate={minDate}
+            onChange={(event, selectedDate) => {
+              setShow(false);
+              props.setFirstForm(prevState => ({
+                ...prevState,
+                date: selectedDate || props.firstForm.date,
+              }));
+            }}
+          />
+        )}
         <Text style={styles.label}>Category*</Text>
         <View style={{...Mixins.inputTextContainer, height: 55}}>
           <Picker
@@ -88,6 +118,14 @@ const styles = StyleSheet.create({
     backgroundColor: Mixins.bgButtonPrimary,
     height: 50,
     borderRadius: 100,
+  },
+  datePickerContainer: {
+    ...Mixins.inputTextContainer,
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 27,
+    marginBottom: 20,
   },
 });
 

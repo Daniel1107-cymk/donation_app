@@ -1,21 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
+import FormData from 'form-data';
 // screen
 import FirstDonateForm from './firstForm';
 import SecondDonateForm from './secondForm';
 import ThirdDonateForm from './thirdForm';
 import ForthDonateForm from './forthForm';
 // helper
-import {post, get} from '../../helpers/network';
+import {postForm, get} from '../../helpers/network';
 // style
 import {Mixins} from '../../assets/mixins';
 
 const Donation = ({navigation}) => {
+  const date = new Date();
   const [steps, setSteps] = useState(1);
   const [addressList, setAddressList] = useState(null);
   const [firstForm, setFirstForm] = useState({
     recipientName: '',
     phoneNumber: '',
+    date: date.setDate(date.getDate() + 3),
     category: '',
   });
   const [secondForm, setSecondForm] = useState({
