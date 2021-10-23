@@ -41,6 +41,7 @@ const FirstDonateForm = props => {
         <Text style={styles.label}>Category*</Text>
         <View style={{...Mixins.inputTextContainer, height: 55}}>
           <Picker
+            mode="dropdown"
             selectedValue={props.firstForm.category}
             onValueChange={(itemValue, itemIndex) =>
               props.setFirstForm(prevState => ({
