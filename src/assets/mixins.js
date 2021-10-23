@@ -44,7 +44,7 @@ export const Mixins = {
   inputTextContainer: {
     backgroundColor: '#FFF',
     borderBottomWidth: 0,
-    borderRadius: 5,
+    borderRadius: 50,
     paddingHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: {

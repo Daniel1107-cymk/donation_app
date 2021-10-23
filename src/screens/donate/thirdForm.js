@@ -77,7 +77,7 @@ const ThirdDonateForm = props => {
       <View style={styles.buttonContainer}>
         <Button
           title="Next"
-          buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
+          buttonStyle={styles.button}
           containerStyle={{marginBottom: 20}}
           disabled={disableButton()}
           disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
@@ -86,7 +86,10 @@ const ThirdDonateForm = props => {
         />
         <Button
           title="Back"
-          buttonStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+          buttonStyle={{
+            ...styles.button,
+            backgroundColor: Mixins.bgButtonSecondary,
+          }}
           containerStyle={{marginBottom: 20}}
           onPress={() => props.setSteps(props.steps - 1)}
         />
@@ -103,11 +106,19 @@ const styles = StyleSheet.create({
   },
   blueButton: {
     borderWidth: 1,
-    borderRadius: 5,
+    height: 50,
+    borderRadius: 100,
     borderColor: Mixins.bgPrimary,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonContainer: {
     paddingHorizontal: 20,
+  },
+  button: {
+    backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
 });
 

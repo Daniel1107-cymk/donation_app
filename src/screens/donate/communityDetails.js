@@ -123,6 +123,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
   cardContainer: {
     borderRadius: 5,

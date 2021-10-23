@@ -45,7 +45,6 @@ const AddressList = props => {
   const deleteAddress = async ({action}) => {
     if (action) {
       const result = await remove(`delete-address/${selectedAddress._id}`);
-      console.log(result);
       if (result.success) {
         getAddress();
         Toast.show({
@@ -157,6 +156,7 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 5,
     backgroundColor: Mixins.bgButtonPrimary,
+    borderRadius: 100,
   },
   title: {
     fontSize: 18,

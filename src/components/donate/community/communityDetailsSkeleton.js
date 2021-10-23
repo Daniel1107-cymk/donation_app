@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
   },
   button: {
-    borderRadius: 5,
+    borderRadius: 100,
     width: '100%',
-    height: 40,
+    height: 50,
     marginBottom: 20,
   },
   card: {

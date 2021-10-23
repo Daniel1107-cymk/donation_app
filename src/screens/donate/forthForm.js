@@ -99,7 +99,7 @@ const ForthDonateForm = props => {
       </ScrollView>
       <Button
         title="Submit"
-        buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
+        buttonStyle={styles.button}
         containerStyle={styles.buttonContainer}
         disabled={donationPhotos.length === 0}
         disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
@@ -108,7 +108,10 @@ const ForthDonateForm = props => {
       />
       <Button
         title="Back"
-        buttonStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+        buttonStyle={{
+          ...styles.button,
+          backgroundColor: Mixins.bgButtonSecondary,
+        }}
         containerStyle={styles.buttonContainer}
         onPress={() => props.setSteps(props.steps - 1)}
       />
@@ -181,6 +184,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     alignSelf: 'center',
+  },
+  button: {
+    backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
 });
 

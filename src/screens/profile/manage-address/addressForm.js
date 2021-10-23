@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -211,7 +212,7 @@ const AddressForm = props => {
               <Icon name="map-pin" size={15} color={Mixins.textBlue} />
             </TouchableOpacity>
           </View>
-          <View style={Mixins.container}>
+          <ScrollView style={{padding: 20}}>
             <Text style={Mixins.titleBold}>Address Details</Text>
             <Input
               label="Full Address"
@@ -250,12 +251,11 @@ const AddressForm = props => {
               title="Save"
               onPress={submit}
               buttonStyle={styles.button}
-              containerStyle={{marginTop: 20}}
               disabledTitleStyle={{color: Mixins.textWhite}}
               disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
               disabled={disableButton()}
             />
-          </View>
+          </ScrollView>
         </>
       )}
     </SafeAreaView>
@@ -281,6 +281,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
   currentPositionButton: {
     justifyContent: 'center',

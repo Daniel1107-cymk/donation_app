@@ -10,7 +10,7 @@ const skeleton = () => {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.title} />
-          <View style={styles.title} />
+          <View style={styles.button} />
         </View>
         <View style={styles.addressItem} />
         <View style={styles.addressItem} />
@@ -35,6 +35,12 @@ const styles = StyleSheet.create({
     width: 120,
     height: 30,
     borderRadius: 5,
+    marginBottom: 10,
+  },
+  button: {
+    width: 120,
+    height: 30,
+    borderRadius: 100,
     marginBottom: 10,
   },
   addressItem: {

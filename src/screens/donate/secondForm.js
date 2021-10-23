@@ -148,7 +148,7 @@ const SecondDonateForm = props => {
       <View style={{padding: 20}}>
         <Button
           title="Next"
-          buttonStyle={{backgroundColor: Mixins.bgButtonPrimary}}
+          buttonStyle={styles.button}
           containerStyle={{marginTop: 20}}
           onPress={() => props.setSteps(props.steps + 1)}
           disabledTitleStyle={{color: Mixins.textWhite}}
@@ -157,7 +157,10 @@ const SecondDonateForm = props => {
         />
         <Button
           title="Back"
-          buttonStyle={{backgroundColor: Mixins.bgButtonSecondary}}
+          buttonStyle={{
+            ...styles.button,
+            backgroundColor: Mixins.bgButtonSecondary,
+          }}
           containerStyle={{marginTop: 20}}
           onPress={() => props.setSteps(props.steps - 1)}
         />
@@ -192,6 +195,11 @@ const styles = StyleSheet.create({
     ...Mixins.titleBold,
     color: Mixins.textPrimary,
     textAlign: 'left',
+  },
+  button: {
+    backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
 });
 

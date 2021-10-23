@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     backgroundColor: Mixins.bgButtonPrimary,
+    height: 50,
+    borderRadius: 100,
   },
 });
 

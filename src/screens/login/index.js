@@ -236,7 +236,7 @@ const Login = ({navigation}) => {
           <Button
             title="Login with Google"
             titleStyle={{color: Mixins.textPrimary}}
-            buttonStyle={{backgroundColor: '#FFF'}}
+            buttonStyle={[styles.button, {backgroundColor: '#FFF'}]}
           />
         </View>
       </View>
@@ -268,6 +268,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Mixins.bgButtonPrimary,
+    borderRadius: 100,
+    height: 50,
   },
   flexRow: {
     flexDirection: 'row',
