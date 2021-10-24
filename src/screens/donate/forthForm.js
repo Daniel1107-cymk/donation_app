@@ -55,7 +55,9 @@ const ForthDonateForm = props => {
             {donationPhotos.length > 0 ? (
               <>
                 {donationPhotos.map((uri, index) => (
-                  <TouchableOpacity onPress={() => showOverlay(index)}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => showOverlay(index)}>
                     <Image
                       key={index}
                       source={{uri: uri}}

@@ -36,7 +36,7 @@ const Camera = props => {
       let newDonationPhotos = [...donationPhotos];
       newDonationPhotos.push(data);
       dispatch(addDonationPhoto(newDonationPhotos));
-      props.navigation.navigate('Donation');
+      props.navigation.goBack();
     } else {
       setData(null);
     }
