@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 // helper
 import {donationStatusColor} from '../helpers/statusColor';
+import Format from '../helpers/format';
 
 const CustomTextList = ({title, value, status}) => {
   return (
@@ -14,7 +15,7 @@ const CustomTextList = ({title, value, status}) => {
             ? [styles.value, {color: donationStatusColor(value)}]
             : styles.value
         }>
-        {value}
+        {title === 'Date' ? Format.formatDate(value) : value}
       </Text>
     </View>
   );

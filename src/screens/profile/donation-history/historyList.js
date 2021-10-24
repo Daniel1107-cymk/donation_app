@@ -10,11 +10,26 @@ import {forceLogout} from '../../../helpers/logout';
 import {Mixins} from '../../../assets/mixins';
 
 const HistoryList = props => {
-  const [donationHistoryList, setDonationHistoryList] = useState(dummy);
+  const [donationList, setDonationList] = useState(null);
   const [flag, setFlag] = useState({
     isLoading: true,
     isShowOverlay: false,
   });
+
+  const getDonations = async () => {
+    const result = await get('donation');
+    if (result.success) {
+      setDonationList(result.data);
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        isLoading: false,
+      }));
+    } else {
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: props.navigation});
+      }
+    }
+  };
 
   const navigateToHistoryDetails = data => {
     props.navigation.navigate('AddressForm');
@@ -22,10 +37,7 @@ const HistoryList = props => {
 
   useEffect(() => {
     props.navigation.addListener('focus', async () => {
-      setFlag(prevFlag => ({
-        ...prevFlag,
-        isLoading: false,
-      }));
+      await getDonations();
     });
   }, []);
 
@@ -39,7 +51,7 @@ const HistoryList = props => {
             <Text style={styles.title}>Donation History</Text>
           </View>
           <FlatList
-            data={donationHistoryList}
+            data={donationList}
             renderItem={({item}) => (
               <HistoryItem item={item} navigate={navigateToHistoryDetails} />
             )}
@@ -52,21 +64,14 @@ const HistoryList = props => {
   );
 };
 
-const dummy = [
-  {
-    recipientName: 'Aming Lim',
-    address: 'Marina Park Blok Q No 30',
-    date: Date.now(),
-    status: 'Completed',
-  },
-];
-
 const styles = StyleSheet.create({
   container: {
-    ...Mixins.container,
+    flex: 1,
     flexDirection: 'column',
   },
   headerContainer: {
+    marginTop: 20,
+    marginHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
