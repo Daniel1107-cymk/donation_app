@@ -1,7 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button, Input} from 'react-native-elements';
-import {Picker} from '@react-native-picker/picker';
+import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 // component
 import GoodsDetailItem from '../../components/donate/goodsDetailItem';
@@ -69,7 +68,8 @@ const ThirdDonateForm = props => {
                 color={Mixins.bgPrimary}
               />
             }
-            containerStyle={styles.blueButton}
+            containerStyle={{marginBottom: 10}}
+            buttonStyle={styles.blueButton}
             onPress={addProduct}
           />
         </View>

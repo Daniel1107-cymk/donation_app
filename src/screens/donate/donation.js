@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import FormData from 'form-data';
+import Toast from 'react-native-toast-message';
 // screen
 import FirstDonateForm from './firstForm';
 import SecondDonateForm from './secondForm';
@@ -10,8 +12,11 @@ import ForthDonateForm from './forthForm';
 import {postForm, get} from '../../helpers/network';
 // style
 import {Mixins} from '../../assets/mixins';
+// actions
+import {resetDonationPhoto} from '../../actions/donationPhotos';
 
-const Donation = ({navigation}) => {
+const Donation = ({route, navigation}) => {
+  const dispatch = useDispatch();
   const date = new Date();
   const [steps, setSteps] = useState(1);
   const [addressList, setAddressList] = useState(null);
@@ -32,6 +37,9 @@ const Donation = ({navigation}) => {
       weight: '',
     },
   ]);
+  const donationPhotos = useSelector(
+    state => state.donationPhotosReducer.donationPhotos,
+  );
 
   const getAddress = async () => {
     const result = await get('address');
@@ -43,8 +51,36 @@ const Donation = ({navigation}) => {
       }));
     } else {
       if (result.status === 401 && result.redirect === true) {
-        await forceLogout({navigation: props.navigation});
+        await forceLogout({navigation: navigation});
       }
+    }
+  };
+
+  const submitDonation = async () => {
+    const form = new FormData();
+    form.append('recipient_name', firstForm.recipientName);
+    form.append('phone_number', firstForm.phoneNumber);
+    form.append('category', firstForm.category);
+    form.append('pickup_date', firstForm.date);
+    form.append('community', route.params?.communityId);
+    form.append('address', secondForm.addressId);
+    form.append('donation_details', JSON.stringify(thirdForm));
+    donationPhotos.map(uri => {
+      form.append('images', {uri: uri, name: 'donation', type: 'image/jpeg'});
+    });
+    const result = await postForm('donation', form);
+    if (result.success) {
+      dispatch(resetDonationPhoto());
+      navigation.popToTop();
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Success',
+        text2: 'Donation successfully submitted, Thank You',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
     }
   };
 
@@ -92,6 +128,7 @@ const Donation = ({navigation}) => {
           navigation={navigation}
           steps={steps}
           setSteps={setSteps}
+          submitDonation={submitDonation}
         />
       )}
     </SafeAreaView>

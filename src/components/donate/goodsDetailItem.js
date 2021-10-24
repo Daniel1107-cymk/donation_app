@@ -35,7 +35,7 @@ const GoodsDetailItem = ({index, product, onChangeText, removeProduct}) => {
         renderErrorMessage={false}
       />
       <Input
-        label="Weight Kg"
+        label="Weight gram"
         value={product.weight}
         onChangeText={text => onChangeText(index, 'weight', text)}
         containerStyle={{paddingHorizontal: 0, marginBottom: 5}}

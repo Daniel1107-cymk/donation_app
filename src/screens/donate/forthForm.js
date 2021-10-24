@@ -104,7 +104,7 @@ const ForthDonateForm = props => {
         disabled={donationPhotos.length === 0}
         disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
         disabledTitleStyle={{color: Mixins.textWhite}}
-        onPress={() => {}}
+        onPress={props.submitDonation}
       />
       <Button
         title="Back"
