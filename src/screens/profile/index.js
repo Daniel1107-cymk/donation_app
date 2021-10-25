@@ -5,6 +5,7 @@ import Profile from './profile';
 import AddressList from './manage-address/addressList';
 import AddressForm from './manage-address/addressForm';
 import DonationHistory from './donation-history/historyList';
+import DonationDetail from './donation-history/donatoniDetails';
 // style
 import {Mixins} from '../../assets/mixins';
 
@@ -33,6 +34,11 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="DonationHistory"
         component={DonationHistory}
+        options={{title: 'Donation History'}}
+      />
+      <Stack.Screen
+        name="DonationDetail"
+        component={DonationDetail}
         options={{title: 'Donation History'}}
       />
     </Stack.Navigator>
