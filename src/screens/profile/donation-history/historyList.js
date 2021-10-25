@@ -31,8 +31,8 @@ const HistoryList = props => {
     }
   };
 
-  const navigateToHistoryDetails = data => {
-    props.navigation.navigate('AddressForm');
+  const navigateToHistoryDetails = donationId => {
+    props.navigation.navigate('DonationDetail', {donationId: donationId});
   };
 
   useEffect(() => {

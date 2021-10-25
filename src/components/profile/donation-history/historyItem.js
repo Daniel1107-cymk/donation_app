@@ -7,7 +7,9 @@ import {Mixins} from '../../../assets/mixins';
 
 const AddressItem = ({item, navigate}) => {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => navigate(item._id)}>
       <View style={styles.textContainer}>
         <CustomTextList title="Recipient Name" value={item.recipient_name} />
         <CustomTextList title="Address" value={item.address.address} />
