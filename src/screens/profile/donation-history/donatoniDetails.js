@@ -10,7 +10,7 @@ import {
 import {Image} from 'react-native-elements';
 // component
 import CustomTextList from '../../../components/customTextList';
-import Skeleton from '../../../components/profile/donation-history/skeleton';
+import Skeleton from '../../../components/profile/donation-history/detail/skeleton';
 // helper
 import {get} from '../../../helpers/network';
 import {forceLogout} from '../../../helpers/logout';
