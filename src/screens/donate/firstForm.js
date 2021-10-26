@@ -80,8 +80,14 @@ const FirstDonateForm = props => {
               }))
             }>
             <Picker.Item label="Select a category" value="" />
-            <Picker.Item label="Goods" value="goods" />
-            <Picker.Item label="Food" value="food" />
+            {props.categoryList !== null &&
+              props.categoryList.map(item => (
+                <Picker.Item
+                  key={item._id}
+                  label={item.name}
+                  value={item._id}
+                />
+              ))}
           </Picker>
         </View>
       </View>

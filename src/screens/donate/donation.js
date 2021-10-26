@@ -20,6 +20,7 @@ const Donation = ({route, navigation}) => {
   const date = new Date();
   const [steps, setSteps] = useState(1);
   const [addressList, setAddressList] = useState(null);
+  const [categoryList, setCategoryList] = useState(null);
   const [firstForm, setFirstForm] = useState({
     recipientName: '',
     phoneNumber: '',
@@ -49,6 +50,17 @@ const Donation = ({route, navigation}) => {
         ...prevState,
         addressId: result.data[0]._id,
       }));
+    } else {
+      if (result.status === 401 && result.redirect === true) {
+        await forceLogout({navigation: navigation});
+      }
+    }
+  };
+
+  const getCategory = async () => {
+    const result = await get('category');
+    if (result.success) {
+      setCategoryList(result.data);
     } else {
       if (result.status === 401 && result.redirect === true) {
         await forceLogout({navigation: navigation});
@@ -88,6 +100,7 @@ const Donation = ({route, navigation}) => {
     navigation.addListener('focus', () => {
       getAddress();
     });
+    getCategory();
   }, []);
 
   return (
@@ -101,6 +114,7 @@ const Donation = ({route, navigation}) => {
             setSteps={setSteps}
             setFirstForm={setFirstForm}
             addressList={addressList}
+            categoryList={categoryList}
           />
         </View>
       )}
