@@ -17,11 +17,24 @@ import {
   RESULTS,
   openSettings,
 } from 'react-native-permissions';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 // helper
 import {post} from '../../helpers/network';
 import Session from '../../helpers/session';
 // style
 import {Mixins} from '../../assets/mixins';
+
+GoogleSignin.configure({
+  scopes: ['profile', 'email', 'openid'], // [Android] what API you want to access on behalf of the user, default is email and profile
+  webClientId:
+    '750813962438-6egdao8rv7d1nlpjh59m8c6ovcn6f8ar.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+});
 
 const screen = Dimensions.get('window');
 
@@ -29,9 +42,12 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState(null);
+  const [googleData, setGoogleData] = useState(null);
   const [flag, setFlag] = useState({
+    isShowBindAccount: false,
     isShowPassword: true,
     isSubmitting: false,
+    isSigninInProgress: false,
   });
 
   const goToRegister = () => {
@@ -168,6 +184,91 @@ const Login = ({navigation}) => {
     toggleIsSubmitting(false);
   };
 
+  const googleSignIn = async () => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSigninInProgress: true,
+    }));
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      if (userInfo) {
+        const data = {
+          email: userInfo.user.email,
+          google_id: userInfo.idToken,
+          first_name: userInfo.user.givenName,
+          last_name: userInfo.user.familyName,
+        };
+        const result = await post('google-signin', JSON.stringify(data));
+        if (result.success) {
+          if (result.data.token !== undefined) {
+          } else if (result.data.msg === 'Email exists') {
+            setGoogleData(data);
+            setFlag(prevFlag => ({
+              ...prevFlag,
+              isShowBindAccount: true,
+            }));
+          } else {
+            Toast.show({
+              type: 'error',
+              position: 'top',
+              text1: 'Error',
+              text2: 'Google sign-in fail, please try again!',
+              visibilityTime: 1000,
+              autoHide: true,
+              bottomOffset: 20,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('canceled');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('no play services');
+      } else {
+        console.log('error');
+      }
+    }
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSigninInProgress: false,
+    }));
+  };
+
+  const bindingAction = async action => {
+    if (action) {
+      const data = {
+        email: googleData.email,
+        google_id: googleData.google_id,
+      };
+      const result = await post('binding-account', JSON.stringify(data));
+      if (result.success) {
+        await Session.setValue('token', result.data.token);
+        setGoogleData(null);
+
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Success',
+          text2: 'Login successful',
+          visibilityTime: 1000,
+          autoHide: true,
+          bottomOffset: 20,
+        });
+        goToHome();
+      }
+    } else {
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        isShowBindAccount: false,
+      }));
+      setGoogleData(null);
+    }
+  };
+
   useEffect(() => {
     checkPermission();
   });
@@ -233,13 +334,52 @@ const Login = ({navigation}) => {
             </TouchableWithoutFeedback>
           </View>
           <Text style={{color: Mixins.textWhite, textAlign: 'center'}}>Or</Text>
-          <Button
-            title="Login with Google"
-            titleStyle={{color: Mixins.textPrimary}}
-            buttonStyle={[styles.button, {backgroundColor: '#FFF'}]}
+          <GoogleSigninButton
+            style={{width: '100%', height: 50}}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Light}
+            onPress={googleSignIn}
+            disabled={flag.isSigninInProgress}
           />
         </View>
       </View>
+      {flag.isShowBindAccount && googleData !== null && (
+        <View
+          style={{
+            ...styles.bindModal,
+            opacity: 1,
+            backgroundColor: 'transparent',
+          }}>
+          <View style={styles.bindModal} />
+          <View style={styles.modalContainer}>
+            <Text style={styles.text}>Are you sure you want to bind</Text>
+            <Text
+              style={[
+                styles.text,
+                {fontWeight: 'bold'},
+              ]}>{`${googleData.email}`}</Text>
+            <Text style={styles.text}>account ?</Text>
+            <View style={{...styles.flexRow, justifyContent: 'space-evenly'}}>
+              <Button
+                title="No"
+                onPress={() => bindingAction()}
+                buttonStyle={{
+                  ...styles.button,
+                  backgroundColor: Mixins.bgButtonSecondary,
+                  width: 100,
+                }}
+                containerStyle={{marginTop: 20}}
+              />
+              <Button
+                title="Yes"
+                onPress={() => bindingAction(true)}
+                buttonStyle={{...styles.button, width: 100}}
+                containerStyle={{marginTop: 20}}
+              />
+            </View>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -273,6 +413,32 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+  },
+  bindModal: {
+    position: 'absolute',
+    backgroundColor: '#000',
+    opacity: 0.3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+    elevation: 5,
+  },
+  modalContainer: {
+    backgroundColor: Mixins.bgWhite,
+    width: screen.width * 0.9,
+    borderRadius: 10,
+    padding: 20,
+    zIndex: 10,
+    elevation: 10,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
 
