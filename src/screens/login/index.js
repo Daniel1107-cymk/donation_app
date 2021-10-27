@@ -248,7 +248,6 @@ const Login = ({navigation}) => {
       if (result.success) {
         await Session.setValue('token', result.data.token);
         setGoogleData(null);
-
         Toast.show({
           type: 'success',
           position: 'top',
@@ -259,14 +258,23 @@ const Login = ({navigation}) => {
           bottomOffset: 20,
         });
         goToHome();
+      } else {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: 'Binding account fail, please try again!',
+          visibilityTime: 1000,
+          autoHide: true,
+          bottomOffset: 20,
+        });
       }
-    } else {
-      setFlag(prevFlag => ({
-        ...prevFlag,
-        isShowBindAccount: false,
-      }));
-      setGoogleData(null);
     }
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isShowBindAccount: false,
+    }));
+    setGoogleData(null);
   };
 
   useEffect(() => {
