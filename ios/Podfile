@@ -20,6 +20,8 @@ target 'donation_app' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-google-signin/google-signin'
+
   target 'donation_appTests' do
     inherit! :complete
     # Pods for testing
