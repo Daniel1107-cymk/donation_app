@@ -202,6 +202,17 @@ const Login = ({navigation}) => {
         const result = await post('google-signin', JSON.stringify(data));
         if (result.success) {
           if (result.data.token !== undefined) {
+            await Session.setValue('token', result.data.token);
+            Toast.show({
+              type: 'success',
+              position: 'top',
+              text1: 'Success',
+              text2: 'Login successful',
+              visibilityTime: 1000,
+              autoHide: true,
+              bottomOffset: 20,
+            });
+            goToHome();
           } else if (result.data.msg === 'Email exists') {
             setGoogleData(data);
             setFlag(prevFlag => ({
