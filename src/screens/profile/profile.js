@@ -1,13 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Avatar} from 'react-native-elements';
 import {CommonActions} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
+import FormData from 'form-data';
 // component
+import EditProfile from '../../components/profile/editProfile';
 import OptionButton from '../../components/profile/optionButton';
 import Skeleton from '../../components/profile/skeleton';
 // helper
-import {get, post} from '../../helpers/network';
+import {get, post, putForm} from '../../helpers/network';
 import Session from '../../helpers/tokenHandler';
 import {forceLogout} from '../../helpers/logout';
 // style
@@ -15,8 +25,11 @@ import {Mixins} from '../../assets/mixins';
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
+  const [errors, setErrors] = useState(null);
   const [flag, setFlag] = useState({
+    isEditProfile: false,
     isLoading: true,
+    isSubmitting: false,
   });
 
   const getProfile = async () => {
@@ -42,6 +55,52 @@ const Profile = ({navigation}) => {
     navigation.navigate('DonationHistory');
   };
 
+  const updateProfile = async data => {
+    setErrors(null);
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSubmitting: true,
+    }));
+    const form = new FormData();
+    form.append('first_name', data.firstName);
+    form.append('last_name', data.lastName);
+    form.append('phone_number', data.phoneNumber);
+    if (data.photoUri !== null && data.photoType !== null) {
+      form.append('picture', {
+        uri: data.photoUri,
+        name: 'image',
+        type: data.photoType,
+      });
+    }
+    const result = await putForm('update-profile', form);
+    if (result.success) {
+      getProfile();
+      handleShowEditProfileModal();
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Success',
+        text2: 'Profile successfully updated',
+        visibilityTime: 1000,
+        autoHide: true,
+        bottomOffset: 20,
+      });
+    } else {
+      setErrors(result.data);
+    }
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSubmitting: false,
+    }));
+  };
+
+  const handleShowEditProfileModal = () => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isEditProfile: !flag.isEditProfile,
+    }));
+  };
+
   const logout = async () => {
     const result = await post('logout');
     if (result.success) {
@@ -64,8 +123,10 @@ const Profile = ({navigation}) => {
     }
   };
 
-  useEffect(async () => {
-    await getProfile();
+  useEffect(() => {
+    navigation.addListener('focus', async () => {
+      await getProfile();
+    });
   }, []);
 
   return (
@@ -75,20 +136,29 @@ const Profile = ({navigation}) => {
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.profileContainer}>
-            <View
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 100,
-                backgroundColor: '#ABABAB',
+            <Avatar
+              rounded
+              size={100}
+              source={{
+                uri:
+                  userData.picture !== undefined && userData.picture !== null
+                    ? `data:${userData.mimetype};base64,${userData.picture}`
+                    : 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
               }}
+              activeOpacity={0.7}
+              containerStyle={{marginBottom: 20}}
             />
-            <View style={{marginLeft: '5%'}}>
+            <View style={{marginLeft: '5%', flex: 1}}>
               <Text
                 style={
                   Mixins.title
                 }>{`${userData.first_name} ${userData.last_name}`}</Text>
               <Text>{userData.email}</Text>
+              <TouchableOpacity
+                style={styles.editProfileButton}
+                onPress={handleShowEditProfileModal}>
+                <Text style={{color: Mixins.textBlue}}>Edit Profile</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.container}>
@@ -134,6 +204,16 @@ const Profile = ({navigation}) => {
           </Text>
         </ScrollView>
       )}
+      {flag.isEditProfile && (
+        <EditProfile
+          userData={userData}
+          isEditProfile={flag.isEditProfile}
+          updateProfile={updateProfile}
+          handleShowEditProfileModal={handleShowEditProfileModal}
+          isSubmitting={flag.isSubmitting}
+          errors={errors}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -160,6 +240,17 @@ const styles = StyleSheet.create({
   counterText: {
     fontSize: 24,
     color: Mixins.textWhite,
+  },
+  editProfileButton: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: Mixins.textBlue,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignSelf: 'flex-end',
+    marginTop: 10,
   },
 });
 
