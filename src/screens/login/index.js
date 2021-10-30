@@ -294,9 +294,9 @@ const Login = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
+      {/* <View style={styles.logoContainer}>
         <Text style={{color: Mixins.textWhite}}>Logo</Text>
-      </View>
+      </View> */}
       <View style={styles.formContainer}>
         <View style={{flex: 0.4}}>
           <Input
@@ -408,6 +408,7 @@ const styles = StyleSheet.create({
     ...Mixins.container,
     backgroundColor: Mixins.bgPrimary,
     flexDirection: 'column',
+    justifyContent: 'center',
   },
   logoContainer: {
     flexGrow: 0.2,
