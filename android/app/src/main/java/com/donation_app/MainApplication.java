@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.reactnativegooglesignin.RNGoogleSigninPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.zoontek.rnpermissions.RNPermissionsPackage;
