@@ -61,6 +61,19 @@ const postFormData = async (path, data) => {
   }
 };
 
+const putFormData = async (path, data) => {
+  try {
+    const response = await axiosInstanceFormData.put(path, data);
+    return {
+      success: response.data.success,
+      data: response.data.data,
+    };
+  } catch (error) {
+    console.log(error);
+    return errorHandler(error);
+  }
+};
+
 const putData = async (path, data) => {
   try {
     const response = await axiosInstance.put(path, data);
@@ -91,4 +104,5 @@ export {
   putData as put,
   deleteData as remove,
   postFormData as postForm,
+  putFormData as putForm,
 };
