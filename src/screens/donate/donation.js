@@ -45,11 +45,23 @@ const Donation = ({route, navigation}) => {
   const getAddress = async () => {
     const result = await get('address');
     if (result.success) {
-      setAddressList(result.data);
-      setSecondForm(prevState => ({
-        ...prevState,
-        addressId: result.data[0]._id,
-      }));
+      if (result.data.length > 0) {
+        setAddressList(result.data);
+        setSecondForm(prevState => ({
+          ...prevState,
+          addressId: result.data[0]._id,
+        }));
+      } else {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: 'Please add an address first',
+          visibilityTime: 1000,
+          autoHide: true,
+          bottomOffset: 20,
+        });
+      }
     } else {
       if (result.status === 401 && result.redirect === true) {
         await forceLogout({navigation: navigation});
