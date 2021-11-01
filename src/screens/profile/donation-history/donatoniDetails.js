@@ -109,7 +109,9 @@ const DonationDetails = props => {
             <View style={styles.table}>
               {donationData.donation_details.map((detail, index) => {
                 return (
-                  <View key={index} style={{flex: 1, flexDirection: 'row'}}>
+                  <View
+                    key={index}
+                    style={{flex: 1, flexDirection: 'row', marginBottom: 5}}>
                     <View style={styles.firstColumn}>
                       <Text>{detail.product_name}</Text>
                     </View>
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Mixins.bgButtonSecondary,
   },
   table: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
