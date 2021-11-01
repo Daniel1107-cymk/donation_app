@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Button, Image, Overlay} from 'react-native-elements';
+import {Button, Image, LinearProgress, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 // style
 import {Mixins} from '../../assets/mixins';
@@ -107,6 +107,7 @@ const ForthDonateForm = props => {
         disabledStyle={{backgroundColor: Mixins.bgButtonSecondary}}
         disabledTitleStyle={{color: Mixins.textWhite}}
         onPress={props.submitDonation}
+        disabled={props.isSubmitting}
       />
       <Button
         title="Back"
@@ -117,6 +118,17 @@ const ForthDonateForm = props => {
         containerStyle={styles.buttonContainer}
         onPress={() => props.setSteps(props.steps - 1)}
       />
+      <Overlay visible={props.isSubmitting}>
+        <Text style={{textAlign: 'center', marginBottom: 20}}>
+          Upload progress
+        </Text>
+        <LinearProgress
+          style={styles.progressBar}
+          color={Mixins.bgHeader}
+          variant="determinate"
+          value={props.uploadPercentage / 100}
+        />
+      </Overlay>
       <Overlay
         visible={flag.isShowOverlay}
         onBackdropPress={() => showOverlay(null)}>
@@ -191,6 +203,10 @@ const styles = StyleSheet.create({
     backgroundColor: Mixins.bgButtonPrimary,
     height: 50,
     borderRadius: 100,
+  },
+  progressBar: {
+    width: window.width * 0.8,
+    height: 10,
   },
 });
 

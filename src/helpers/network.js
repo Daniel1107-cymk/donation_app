@@ -49,9 +49,12 @@ const postData = async (path, data) => {
   }
 };
 
-const postFormData = async (path, data) => {
+const postFormData = async (path, data, callback) => {
   try {
-    const response = await axiosInstanceFormData.post(path, data);
+    var config = {
+      onUploadProgress: callback,
+    };
+    const response = await axiosInstanceFormData.post(path, data, config);
     return {
       success: response.data.success,
       data: response.data.data,

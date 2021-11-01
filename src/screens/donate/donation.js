@@ -21,6 +21,10 @@ const Donation = ({route, navigation}) => {
   const [steps, setSteps] = useState(1);
   const [addressList, setAddressList] = useState(null);
   const [categoryList, setCategoryList] = useState(null);
+  const [flag, setFlag] = useState({
+    uploadPercentage: 0,
+    isSubmitting: false,
+  });
   const [firstForm, setFirstForm] = useState({
     recipientName: '',
     phoneNumber: '',
@@ -80,7 +84,23 @@ const Donation = ({route, navigation}) => {
     }
   };
 
+  const onUploadProgress = progressEvent => {
+    var percentCompleted = Math.round(
+      (progressEvent.loaded * 100) / progressEvent.total,
+    );
+    if (percentCompleted === 100) {
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        uploadPercentage: 95,
+      }));
+    }
+  };
+
   const submitDonation = async () => {
+    setFlag(prevFlag => ({
+      ...prevFlag,
+      isSubmitting: true,
+    }));
     const form = new FormData();
     form.append('recipient_name', firstForm.recipientName);
     form.append('phone_number', firstForm.phoneNumber);
@@ -92,8 +112,12 @@ const Donation = ({route, navigation}) => {
     donationPhotos.map(uri => {
       form.append('images', {uri: uri, name: 'donation', type: 'image/jpeg'});
     });
-    const result = await postForm('donation', form);
+    const result = await postForm('donation', form, onUploadProgress);
     if (result.success) {
+      setFlag(prevFlag => ({
+        ...prevFlag,
+        uploadPercentage: 100,
+      }));
       dispatch(resetDonationPhoto());
       navigation.popToTop();
       Toast.show({
@@ -155,6 +179,8 @@ const Donation = ({route, navigation}) => {
           steps={steps}
           setSteps={setSteps}
           submitDonation={submitDonation}
+          isSubmitting={flag.isSubmitting}
+          uploadPercentage={flag.uploadPercentage}
         />
       )}
     </SafeAreaView>
